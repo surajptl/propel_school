@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="{% static 'css/style.css'%}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
         <title>Propel School</title>
     </head>
     <body>
@@ -17,7 +17,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="nav navbar-nav">
-                        <li class="navbar-item"><a href="#" class="btn btn-light">Apply Now</a></li>
+                        <li class="navbar-item"><a href="{% url 'register' %}" class="btn btn-light">Apply Now</a></li>
                         <li class="navbar-item"><a href="#" class="btn btn-outline-light ml-2">Login</a></li>
                     </ul>
                 </div>
