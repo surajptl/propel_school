@@ -12,6 +12,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(default=timezone.now)
+    full_name = models.CharField(max_length=128, default='newuser')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
