@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
 from .models import Snippet
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit
 
 #add required fields
 
@@ -31,6 +33,22 @@ class ApplicationForm(forms.Form):
     fcc_link = forms.CharField(label='FreeCodeCamp Public Profile URL Link',max_length=50)
     interest = forms.CharField(widget=forms.Textarea)
     fcc_eligible = forms.CharField(label='Do you have 100+ points in FreeCodeCamp?', widget=forms.Select(choices=FCC_STATUS))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            'applicant_name',
+            'phone_number',
+            'd_o_b',
+            'propel_mode',
+            'job_state',
+            'fcc_link',
+            'interest',
+            'fcc_eligible',
+            Submit('submit','Submit', css_class='btn-success')
+        )
 
 
 class SnippetForm(forms.ModelForm):
