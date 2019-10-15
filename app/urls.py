@@ -4,4 +4,5 @@ from . import views
 
 urlpatterns = [
     path('application', views.application),
+    path('snippet',views.snippet_detail)
 ]
