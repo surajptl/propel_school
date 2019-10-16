@@ -25,7 +25,9 @@ class ApplicationForm(forms.ModelForm):
     
     applicant_name = forms.CharField(label='Name',max_length=15)
     phone_number   = forms.IntegerField( widget=forms.TextInput(attrs={ 'max_length': 10, 'required': True, } ), )
-    d_o_b          = forms.DateField(label="Date of Birth",widget=forms.SelectDateWidget())
+    #d_o_b          = forms.DateField(label="Date of Birth",widget=forms.SelectDateWidget())
+    d_o_b = forms.DateTimeField(label="Date of Birth", input_formats=['%d/%m/%Y %H:%M'], widget= forms.TextInput
+    (attrs={'placeholder':'dd/mm/yyyy'}))
     propel_mode    = forms.CharField(label='Where would you like to attend the program from?', widget=forms.Select(choices=PROPEL_CHOICES))
     job_state      = forms.CharField(label='Are you actively looking for a job? ', widget=forms.Select(choices=JOB_STATUS))
     fcc_link       = forms.CharField(label='FreeCodeCamp Public Profile URL Link',max_length=50)
