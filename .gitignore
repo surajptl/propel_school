@@ -49,6 +49,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+*.py,cover
 .hypothesis/
 .pytest_cache/
 
@@ -122,8 +123,6 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-
-settings.py
 .vscode/
 
 # Pyre type checker
