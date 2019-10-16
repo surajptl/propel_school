@@ -1,5 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+app/__pycache__/
+*.pyc
 *.py[cod]
 *$py.class
 
@@ -120,6 +122,8 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+.vscode/
 
 # Pyre type checker
 .pyre/
