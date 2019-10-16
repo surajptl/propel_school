@@ -12,6 +12,13 @@ from django.db import models
 
 
 class Applicant(models.Model):
+
+    APPROVAL_CHOICES = [
+    (u'1', u'Awaiting'),
+    (u'2', u'No'),
+    (u'3', u'Yes')
+    ]
+
     applicant_name = models.CharField(default=None, max_length=15)
     phone_number = models.IntegerField(default=None)
     d_o_b          = models.DateField(default=None)
@@ -20,3 +27,5 @@ class Applicant(models.Model):
     fcc_link       = models.CharField(default=None, max_length=150)
     interest       = models.CharField(default=None, max_length=250)
     fcc_eligible   = models.BooleanField(default=False) 
+    approval       = models.CharField(max_length=1, choices=APPROVAL_CHOICES, null=True)
+ 
