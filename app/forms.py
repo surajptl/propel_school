@@ -22,7 +22,7 @@ class ApplicationForm(forms.ModelForm):
         (True, 'Yes'),
         (False, 'No'),
     ]
-    
+
     applicant_name = forms.CharField(label='Name',max_length=15)
     phone_number   = forms.IntegerField( widget=forms.TextInput(attrs={ 'max_length': 10, 'required': True, } ), )
     #d_o_b          = forms.DateField(label="Date of Birth",widget=forms.SelectDateWidget())
@@ -54,10 +54,3 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Applicant
         fields = ('applicant_name', 'phone_number', 'd_o_b', 'propel_mode', 'job_state', 'fcc_link', 'interest', 'fcc_eligible', )
-
-
-# class SnippetForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Snippet
-#         fields = ('name', 'phone_no')
