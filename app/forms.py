@@ -1,13 +1,13 @@
 from django import forms
 from django.contrib.admin.widgets import AdminDateWidget
 from django.forms.fields import DateField
-from .models import Snippet, Applicant
+from .models import Applicant
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 
 #add required fields
 
-class ApplicationForm(forms.Form, forms.ModelForm):
+class ApplicationForm(forms.ModelForm):
 
     PROPEL_CHOICES = [
     ('online', 'Home (Online / Remote)'),
@@ -23,7 +23,7 @@ class ApplicationForm(forms.Form, forms.ModelForm):
         (False, 'No'),
     ]
     
-    applicant_name = forms.CharField(max_length=15)
+    applicant_name = forms.CharField(label='Name',max_length=15)
     phone_number   = forms.IntegerField( widget=forms.TextInput(attrs={ 'max_length': 10, 'required': True, } ), )
     d_o_b          = forms.DateField(label="Date of Birth",widget=forms.SelectDateWidget())
     propel_mode    = forms.CharField(label='Where would you like to attend the program from?', widget=forms.Select(choices=PROPEL_CHOICES))
@@ -48,13 +48,14 @@ class ApplicationForm(forms.Form, forms.ModelForm):
             Submit('submit','Submit', css_class='btn-success')
         )
 
+
     class Meta:
         model = Applicant
-        fields = ('name',)
+        fields = ('applicant_name', 'phone_number', 'd_o_b', 'propel_mode', 'job_state', 'fcc_link', 'interest', 'fcc_eligible', )
 
 
-class SnippetForm(forms.ModelForm):
+# class SnippetForm(forms.ModelForm):
 
-    class Meta:
-        model = Snippet
-        fields = ('name', 'phone_no')
+#     class Meta:
+#         model = Snippet
+#         fields = ('name', 'phone_no')
