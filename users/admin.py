@@ -20,8 +20,8 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('full_name', 'email', 'password1', 'password2', 'is_staff', 'is_active')}
         ),
     )
-    search_fields = ('email',)
-    ordering = ('email',)
+    search_fields = ('email','full_name')
+    ordering = ('full_name',)
 
-
+admin.site.site_header = 'Propel School Administration'
 admin.site.register(CustomUser, CustomUserAdmin)
