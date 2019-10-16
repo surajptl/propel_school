@@ -9,3 +9,12 @@ class Snippet(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Applicant(models.Model):
+    name = models.CharField(max_length=15)
+    #phone_no = models.IntegerField()
+
+
+    def __str__(self):
+        return self.name
