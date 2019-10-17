@@ -26,13 +26,15 @@ class ApplicationForm(forms.ModelForm):
     applicant_name = forms.CharField(label='Name',max_length=15)
     phone_number   = forms.IntegerField( widget=forms.TextInput(attrs={ 'max_length': 10, 'required': True, } ), )
     #d_o_b          = forms.DateField(label="Date of Birth",widget=forms.SelectDateWidget())
-    d_o_b = forms.DateTimeField(label="Date of Birth", input_formats=['%d/%m/%Y %H:%M'], widget= forms.TextInput
+    d_o_b = forms.DateTimeField(label="Date of Birth", input_formats=['%d/%m/%Y'], widget= forms.TextInput
     (attrs={'placeholder':'dd/mm/yyyy'}))
     propel_mode    = forms.CharField(label='Where would you like to attend the program from?', widget=forms.Select(choices=PROPEL_CHOICES))
     job_state      = forms.CharField(label='Are you actively looking for a job? ', widget=forms.Select(choices=JOB_STATUS))
-    fcc_link       = forms.CharField(label='FreeCodeCamp Public Profile URL Link',max_length=50)
+    fcc_link       = forms.CharField(label='FreeCodeCamp Public Profile URL Link',max_length=50, widget= forms.TextInput
+    (attrs={'placeholder':'you need a minimum of 100 points on freecodecamp to be eligible'}))
     interest       = forms.CharField(label='Why are you interested in this program?', widget=forms.Textarea)
     fcc_eligible   = forms.CharField(label='Do you have 100+ points in FreeCodeCamp?', widget=forms.Select(choices=FCC_STATUS))
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -44,13 +46,14 @@ class ApplicationForm(forms.ModelForm):
             'd_o_b',
             'propel_mode',
             'job_state',
+            'fcc_eligible',
             'fcc_link',
             'interest',
-            'fcc_eligible',
             Submit('submit','Submit', css_class='btn-success')
         )
 
 
     class Meta:
         model = Applicant
-        fields = ('applicant_name', 'phone_number', 'd_o_b', 'propel_mode', 'job_state', 'fcc_link', 'interest', 'fcc_eligible', )
+        fields = ('applicant_name', 'phone_number', 'd_o_b', 'propel_mode', 'job_state','fcc_eligible',  'fcc_link', 'interest',)
+
