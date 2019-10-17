@@ -22,7 +22,7 @@ class ApplicationForm(forms.ModelForm):
         (True, 'Yes'),
         (False, 'No'),
     ]
-    
+
     applicant_name = forms.CharField(label='Name',max_length=15)
     phone_number   = forms.IntegerField( widget=forms.TextInput(attrs={ 'max_length': 10, 'required': True, } ), )
     #d_o_b          = forms.DateField(label="Date of Birth",widget=forms.SelectDateWidget())
@@ -34,7 +34,7 @@ class ApplicationForm(forms.ModelForm):
     (attrs={'placeholder':'you need a minimum of 100 points on freecodecamp to be eligible'}))
     interest       = forms.CharField(label='Why are you interested in this program?', widget=forms.Textarea)
     fcc_eligible   = forms.CharField(label='Do you have 100+ points in FreeCodeCamp?', widget=forms.Select(choices=FCC_STATUS))
-    
+
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -56,10 +56,3 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Applicant
         fields = ('applicant_name', 'phone_number', 'd_o_b', 'propel_mode', 'job_state','fcc_eligible',  'fcc_link', 'interest',)
-
-
-# class SnippetForm(forms.ModelForm):
-
-#     class Meta:
-#         model = Snippet
-#         fields = ('name', 'phone_no')
