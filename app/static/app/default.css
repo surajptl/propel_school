@@ -306,15 +306,17 @@
 	{
 		font-size: 3.5em;
 		color: rgba(255,255,255,0.9);
+		margin-bottom: 0.5em;
+		margin-top: 0.1;
 	}
 	
 	.title .byline
 	{
 		letter-spacing: 0.15em;
-		text-transform: uppercase;
+		/* text-transform: uppercase; */
 		font-weight: 400;
 		font-size: 1.1em;
-		color: #6F6F6F;
+		color: rgb(206, 201, 201);
 	}
 
 	.title1
@@ -326,12 +328,14 @@
 	{
 		font-size: 3.5em;
 		color: rgba(0,0,0,0.9);
+		margin-bottom: 0.5em;
+		margin-top: 0.1;
 	}
-	
+
 	.title1 .byline
 	{
 		letter-spacing: 0.15em;
-		text-transform: uppercase;
+		/* text-transform: uppercase; */
 		font-weight: 400;
 		font-size: 1.1em;
 		color: #6F6F6F;
@@ -571,6 +575,7 @@
 	{
 		overflow: hidden;
 		padding: 5em 0em;
+		background-color: #292b2c;
 		border-top: 1px solid rgba(255,255,255,0.08);
 	}
 	
@@ -580,13 +585,13 @@
 		text-align: center;
 		text-transform: uppercase;
 		font-size: 0.80em;
-		color: rgba(255,255,255,0.3);
+		color: rgb(206, 201, 201);	
 	}
 	
 	#copyright a
 	{
 		text-decoration: none;
-		color: rgba(255,255,255,0.6);
+		color: rgb(206, 201, 201);
 	}
 
 /*********************************************************************************/
