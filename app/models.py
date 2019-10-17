@@ -1,15 +1,5 @@
 from django.db import models
-
-# Create your models here.
-
-# class Snippet(models.Model):
-#     name = models.CharField(max_length=15)
-#     phone_no = models.IntegerField()
-
-
-#     def __str__(self):
-#         return self.name
-
+import datetime
 
 class Applicant(models.Model):
 
@@ -26,6 +16,12 @@ class Applicant(models.Model):
     job_state      = models.BooleanField(default=True)
     fcc_link       = models.CharField(default=None, max_length=150)
     interest       = models.CharField(default=None, max_length=250)
-    fcc_eligible   = models.BooleanField(default=False) 
+    fcc_eligible   = models.BooleanField(default=False)
     approval       = models.CharField(max_length=1, choices=APPROVAL_CHOICES, null=True)
- 
+
+class BatchDetail(models.Model):
+    batch_type = models.CharField(null=True, max_length=30)
+    date_from = models.DateField(default=datetime.date.today())
+    to_date = models.DateField(default=None)
+    strength = models.PositiveIntegerField(default=0, null=False)
+    mentor_name = models.CharField(null=True, max_length=30)
