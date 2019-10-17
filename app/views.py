@@ -14,10 +14,10 @@ def index(request):
 def application(request):
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
-        print('here')
         if form.is_valid():
         # name = form.cleaned_data['applicant_name']
         # print(name)
+            print('here')
             form.save()
     form = ApplicationForm()
     return render(request, 'form.html', {'form':form})

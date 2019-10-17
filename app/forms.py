@@ -56,4 +56,3 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Applicant
         fields = ('applicant_name', 'phone_number', 'd_o_b', 'propel_mode', 'job_state','fcc_eligible',  'fcc_link', 'interest',)
-
