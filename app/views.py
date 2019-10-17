@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm 
-from django.http import HttpResponse 
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
 from .forms import ApplicationForm
 
 # Create your views here.
@@ -14,7 +14,6 @@ def index(request):
 def application(request):
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
-        
         if form.is_valid():
         # name = form.cleaned_data['applicant_name']
         # print(name)
@@ -22,5 +21,3 @@ def application(request):
             form.save()
     form = ApplicationForm()
     return render(request, 'form.html', {'form':form})
-
-
