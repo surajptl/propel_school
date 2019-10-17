@@ -4,9 +4,14 @@ import datetime
 class Applicant(models.Model):
 
     APPROVAL_CHOICES = [
-    (u'1', u'Awaiting'),
-    (u'2', u'No'),
-    (u'3', u'Yes')
+    (u'1', u'Waitlist'),
+    (u'2', u'Private'),
+    (u'3', u'Not Enough Points'),
+    (u'4', u'Wrong Link'),
+    (u'5', u'Shortlist'),
+    (u'6', u'Joined'),
+    (u'7', u'Propel Challenge'),
+    (u'8', u'Extended Propel Challenge'),
     ]
 
     applicant_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, default=8)
