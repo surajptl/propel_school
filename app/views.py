@@ -15,4 +15,4 @@ def application(request):
         if form.is_valid():
             form.save()
     form = ApplicationForm()
-    return render(request, 'form.html', {'form':form})
+    return render(request, 'app/form.html', {'form':form})

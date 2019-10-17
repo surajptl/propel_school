@@ -1,0 +1,26 @@
+{% extends 'app/base.html' %}
+{% load crispy_forms_tags %}
+{% block app_content %}
+   <div class="container">
+       <form method="POST">
+               {% csrf_token %}
+           <fieldset class="form-group">
+               <legend class="border-bottom mb-4">Apply for Propel</legend>
+               {{ form|crispy }}
+           </fieldset>
+           <div class="form-group">
+               <button class="btn btn-outline-info" type="submit">
+                   Apply
+               </button>
+           </div>
+       </form>
+   </div>
+</body>
+<script>
+   $(function () {
+       $("#id_date").datetimepicker({
+       format: 'd/m/Y',
+       });
+   });
+</script>
+{% endblock %}
