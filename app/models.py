@@ -9,8 +9,7 @@ class Applicant(models.Model):
     (u'3', u'Yes')
     ]
 
-    applicant_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, default=1)
-    # applicant = models.ForeignKey(CustomUser,on_delete=models.CASCADE, default=2)
+    applicant_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, default=8)
     applicant_name = models.CharField(default=None, max_length=15)
     phone_number = models.IntegerField(default=None)
     d_o_b          = models.DateField(default=None)
@@ -21,6 +20,6 @@ class Applicant(models.Model):
     fcc_eligible   = models.BooleanField(default=False) 
     approval       = models.CharField(default='1',max_length=1, choices=APPROVAL_CHOICES, null=True)
 
-    def __str__(self):
-        return self.applicant_id.email
+    # def __str__(self):
+    #     return self.applicant_id.email
  
