@@ -22,10 +22,9 @@ class ApplicationForm(forms.ModelForm):
         (True, 'Yes'),
         (False, 'No'),
     ]
-
+    
     applicant_name = forms.CharField(label='Name',max_length=15)
     phone_number   = forms.IntegerField( widget=forms.TextInput(attrs={ 'max_length': 10, 'required': True, } ), )
-    #d_o_b          = forms.DateField(label="Date of Birth",widget=forms.SelectDateWidget())
     d_o_b = forms.DateTimeField(label="Date of Birth", input_formats=['%d/%m/%Y'], widget= forms.TextInput
     (attrs={'placeholder':'dd/mm/yyyy'}))
     propel_mode    = forms.CharField(label='Where would you like to attend the program from?', widget=forms.Select(choices=PROPEL_CHOICES))

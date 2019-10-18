@@ -8,11 +8,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css'%}">
         <title>Propel School</title>
     </head>
-<<<<<<< HEAD
     <body style="padding: 0px 0px 80px 0px; margin: auto;">
-=======
-    <body style="padding: 20px 20px 80px 20px; margin: auto;">
->>>>>>> a3b4b2f1b97d294e96a97182edba5f93e18a4b20
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
             <div class="container">
                 <a class="navbar-brand mr-4" href="#">Propel School</a>
@@ -28,7 +24,7 @@
                         <a class="nav-item btn btn-outline-light ml-2" href="{% url 'logout' %}">Logout</a>
                         <a></a>
                         {% else %}
-                        <a class="nav-item btn btn-light" href="{% url 'register'%}">Apply Now</a>
+                        <a class="nav-item btn btn-light" href="{% url 'application'%}">Apply Now</a>
                         <a class="nav-item btn btn-outline-light ml-2" href="{% url 'login' %}">Login</a>
                         {% endif %}
                     </div>
