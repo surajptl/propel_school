@@ -22,7 +22,12 @@
             <div id="menu">
                 <ul>
                     <li class="current_page_item"><a href="{% url 'register' %}" accesskey="1" title="">Apply Now</a></li>
-                    <li><a href="{% url 'login' %}" accesskey="2" title="">Login</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}" accesskey="2" title="">Dashboard</a></li>
+                    <li><a href="{% url 'logout' %}" accesskey="3" title="">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}" accesskey="4" title="">Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

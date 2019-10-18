@@ -16,3 +16,7 @@ def application(request):
             form.save()
     form = ApplicationForm()
     return render(request, 'app/form.html', {'form':form})
+
+@login_required
+def dashboard(request):
+    return render(request, 'app/dashboard.html')
