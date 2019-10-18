@@ -16,7 +16,7 @@ class Applicant(models.Model):
     (u'8', u'Extended Propel Challenge'),
     ]
 
-    applicant_id   = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True,        default=1)
+    applicant_id   = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, default=1)
     applicant_name = models.CharField(default=None, max_length=15)
     phone_number   = models.IntegerField(default=None)
     d_o_b          = models.DateField(default=None)
