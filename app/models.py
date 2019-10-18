@@ -1,12 +1,17 @@
 from django.db import models
 from users.models import CustomUser
-
+import datetime
 class Applicant(models.Model):
 
     APPROVAL_CHOICES = [
-    (u'1', u'Awaiting'),
-    (u'2', u'No'),
-    (u'3', u'Yes')
+    (u'1', u'Waitlist'),
+    (u'2', u'Private'),
+    (u'3', u'Not Enough Points'),
+    (u'4', u'Wrong Link'),
+    (u'5', u'Shortlist'),
+    (u'6', u'Joined'),
+    (u'7', u'Propel Challenge'),
+    (u'8', u'Extended Propel Challenge'),
     ]
 
     applicant_id = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, default=8)
@@ -17,9 +22,12 @@ class Applicant(models.Model):
     job_state      = models.BooleanField(default=True)
     fcc_link       = models.CharField(default=None, max_length=150)
     interest       = models.CharField(default=None, max_length=250)
-    fcc_eligible   = models.BooleanField(default=False) 
+    fcc_eligible   = models.BooleanField(default=False)
     approval       = models.CharField(default='1',max_length=1, choices=APPROVAL_CHOICES, null=True)
 
-    # def __str__(self):
-    #     return self.applicant_id.email
- 
+class BatchDetail(models.Model):
+    batch_type = models.CharField(null=True, max_length=30)
+    date_from = models.DateField(default=datetime.date.today())
+    to_date = models.DateField(default=None)
+    strength = models.PositiveIntegerField(default=0, null=False)
+    mentor_name = models.CharField(null=True, max_length=30)

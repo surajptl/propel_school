@@ -1,16 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm 
-from django.http import HttpResponse 
+from django.contrib.auth.forms import UserCreationForm
+from django.http import HttpResponse
 from .forms import ApplicationForm
 from users.models import CustomUser
 
 # Create your views here.
-
-@login_required
 def index(request):
     return render(request, 'app/index.html')
-
 
 @login_required
 def application(request):
