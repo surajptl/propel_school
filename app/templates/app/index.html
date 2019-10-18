@@ -1,7 +1,117 @@
-{% extends 'app/base.html' %}
+{% load static %}
+<!DOCTYPE html>
 
-{% block app_content %}
-<div>
-    <h1>Welcome to Propel School</h1>
-</div>
-{% endblock %}
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Propel School</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700,900" rel="stylesheet" />
+        <link href="{% static 'app/default.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <link href="{% static 'app/fonts.css' %}" rel="stylesheet" type="text/css" media="all" />
+        <!--[if IE 6]><link href="default_ie6.css" rel="stylesheet" type="text/css" /><![endif]-->
+    </head>
+    <body>
+    <div id="header-wrapper">
+        <div id="header" class="container">
+            <div id="logo">
+                <span class="icon icon-laptop"></span>
+                <h1><a href="#">Propel School</a></h1>
+            </div>
+            <div id="menu">
+                <ul>
+                    <li class="current_page_item"><a href="{% url 'register' %}" accesskey="1" title="">Apply Now</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="{% url 'dashboard' %}" accesskey="2" title="">Dashboard</a></li>
+                    <li><a href="{% url 'logout' %}" accesskey="3" title="">Logout</a></li>
+                    {% else %}
+                    <li><a href="{% url 'login' %}" accesskey="4" title="">Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="wrapper2">
+        <div id="welcome1" class="container">
+            <div class="title1">
+                <h2>Welcome to Propel</h2>
+                <span class="byline">A Revolutionary New School That Invests in You.</span> </div>
+            <div class="content">
+                <p>Currently offering a 2-week immersive program to launch your software engineering carrer.<strong> For Free.</strong></p>
+                <a href="{% url 'register' %}" class="button">Apply Now</a> </div>
+        </div>
+    </div>
+    <div id="wrapper1">
+        <div id="welcome" class="container">
+            <div class="title">
+                <h2>Program Details</h2>
+                <h3><b>SCHEDULE</b></h3>
+                <span class="byline">Everyday from 9:00 a.m. to 6:00 p.m. for a duration of 2 weeks.</span><br>
+                <br>
+                <h3><b>LOCATION</b></h3>
+                <span class="byline">91Springboard, J.P. Nagar, Bangalore.</span><br>
+                <br>
+                <h3><b>COST</b></h3>
+                <span class="byline">Free</span><br>
+                <br>
+                <h3><b>PREREQUISITES</b></h3>
+                <span class="byline">A minimum of 100 points on FreeCodeCamp to be eligible for the training.<br>
+                Example: https://www.freecodecamp.org/debasis_nath
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="wrapper2">
+        <div id="welcome1" class="container">
+            <div class="title1">
+                <h2>Curriculum</h2>
+                <h3>CLI & Git</h3>
+                <span class="byline">The basics of using command line interface and Git</span><br>
+                <br>
+                <h3>Introduction to JavaScript</h3>
+                <span class="byline">Learn the language of web.</span><br>
+                <br>
+                <h3>Algorithms & Problem Solving</h3>
+                <span class="byline">Sharpen your problem solving skills with over 80 hours of intense programming practice.</span> 
+            </div>
+        </div>
+    </div>
+    <div id="wrapper1">
+        <div id="welcome" class="container">
+            <div class="title">
+                <h2>FAQs</h2>
+                <h3>Why is the program free?</h3>
+                <span class="byline">Because best things in life are. On a serious note, we are supported by tech companies who are interested in hiring our graduates.</span><br>
+                <br>
+                <h3>Will I get a job?</h3>
+                <span class="byline">The participants who do well in these 2 weeks will get referred to tech companies in Bengaluru.</span><br>
+                <br>
+                <h3>Why are we using JavaScript?</h3>
+                <span class="byline">There is a huge demand of Node, React, Angular and Vue developers. Learning JavaScript will help you get a job in the current market.</span> 
+            </div>
+        </div>
+    </div>    
+    <div id="wrapper2">
+        <div id="footer" class="container">
+            <div>
+                <header class="title1">
+                    <h2>Contact Us</h2>
+                    <span class="byline">hello@mountblue.io</span> 
+                </header>
+                <ul class="contact">
+                    <li><a href="https://www.linkedin.com/company/mountblue/about/" class="icon icon-linkedin-sign"><span>Twitter</span></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="copyright">
+            <p>&copy; Untitled. All rights reserved. | Design by <a href="https://www.mountblue.io/">Mountblue</a></p>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </body>
+</html>
+
+
