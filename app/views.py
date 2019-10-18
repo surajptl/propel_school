@@ -6,7 +6,6 @@ from .forms import ApplicationForm
 import json
 from users.models import CustomUser
 
-
 # Create your views here.
 def index(request):
     return render(request, 'app/index.html')
@@ -23,3 +22,8 @@ def application(request):
             print(request.user.email)
     form = ApplicationForm()
     return render(request, 'app/form.html', {'form':form})
+
+
+@login_required
+def dashboard(request):
+    return render(request, 'app/dashboard.html')
