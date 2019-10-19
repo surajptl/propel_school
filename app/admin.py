@@ -36,9 +36,22 @@ class ApplicantAdmin(admin.ModelAdmin):
 
     def propel_challenge(self, request, queryset):
         queryset.update(approval='7')
+        subject = "Propel School | Challenge"
+        text_content = render_to_string('app/propel_challenge_email.txt')
+        html_content = render_to_string('app/propel_challenge_email.html')
+        for email in queryset:
+            to = str(email.applicant_id)
+            email_by_admin(subject, text_content, to, html_content)
 
     def Extended_propel_challenge(self, request, queryset):
         queryset.update(approval='8')
+        subject = "Extended Propel Challenge"
+        text_content = render_to_string('app/extended_propel_challenge_email.txt')
+        html_content = render_to_string('app/extended_propel_challenge_email.html')
+        for email in queryset:
+            to = str(email.applicant_id)
+            email_by_admin(subject, text_content, to, html_content)
+
 
     def fetch_fcc_points(self, request, queryset):
         pass
