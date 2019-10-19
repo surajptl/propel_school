@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
@@ -20,6 +20,7 @@ def application(request):
             instance.applicant_id = CustomUser.objects.get(id=request.user.id)
             instance.save()
             print(request.user.email)
+        return redirect('index')
     form = ApplicationForm()
     return render(request, 'app/form.html', {'form':form})
 
