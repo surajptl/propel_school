@@ -23,5 +23,5 @@ class CustomUserAdmin(UserAdmin):
     search_fields = ('email','full_name')
     ordering = ('full_name',)
 
-admin.site.site_header = 'Propel School Administration'
+admin.site.site_header = 'Propel School'
 admin.site.register(CustomUser, CustomUserAdmin)
