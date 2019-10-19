@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from .forms import ApplicationForm
 import json
 from users.models import CustomUser
+from app.models import Applicant
 
 # Create your views here.
 def index(request):
@@ -26,4 +27,12 @@ def application(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'app/dashboard.html')
+    print(Applicant.objects.values('approval').filter(applicant_id=1))
+    if Applicant.objects.filter(applicant_id=request.user).count()==1:
+       apply_message={'status':'You have submitted your application succesfully, please wait for further instructions'}
+    #    app_status = Applicant.objects.
+    else :apply_message={'status':'Apply for propel school to join the best prep school'}
+    context={
+        'apply_message':apply_message
+    }
+    return render(request, 'app/dashboard.html', context)
