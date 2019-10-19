@@ -12,7 +12,7 @@ def register(request):
         if form.is_valid():
             form.save()
             email = form.cleaned_data.get('email')
-            messages.success(request, f'Your account has been created! You can now login!')
+            # messages.success(request, f'Your account has been created! You can now login!')
             return redirect('login')
     else:
         form = CustomUserCreationForm()

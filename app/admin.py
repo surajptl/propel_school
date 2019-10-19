@@ -1,4 +1,7 @@
+from django.conf import settings
 from django.contrib import admin
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import get_template, render_to_string
 from .models import Applicant, BatchDetail
 
 class ApplicantAdmin(admin.ModelAdmin):
@@ -11,7 +14,6 @@ class ApplicantAdmin(admin.ModelAdmin):
 
     def private_profile(self, request, queryset):
         queryset.update(approval='2')
-        print(dir(queryset.values()))
 
     def not_enough_points(self, request, queryset):
         queryset.update(approval='3')
@@ -21,6 +23,13 @@ class ApplicantAdmin(admin.ModelAdmin):
 
     def shortlist_condidate(self, request, queryset):
         queryset.update(approval='5')
+        subject = 'Propel School | Confirmation for program starting 7th Jan, 2019'
+        text_content = render_to_string('app/shortlist_email.txt')
+        html_content = render_to_string('app/shortlist_email.html')
+        for email in queryset:
+            to = str(email.applicant_id)
+            email_by_admin(subject, text_content, to, html_content)
+
 
     def join_propel(self, request, queryset):
         queryset.update(approval='6')
@@ -34,8 +43,10 @@ class ApplicantAdmin(admin.ModelAdmin):
     def fetch_fcc_points(self, request, queryset):
         pass
 
-
-
+#Function to send email
+def email_by_admin(subject, text_content, to, html_content):
+    from_email = settings.EMAIL_HOST_USER
+    send_mail(subject, text_content, from_email, [to], html_message=html_content)
 
 class BatchDetailAdmin(admin.ModelAdmin):
     list_display = ('batch_type', 'date_from', 'to_date', 'strength', 'mentor_name')

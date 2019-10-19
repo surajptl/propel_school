@@ -16,11 +16,11 @@ def application(request):
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():
-            instance              = form.save(commit=False)
+            instance = form.save(commit=False)
             instance.applicant_id = CustomUser.objects.get(id=request.user.id)
             instance.save()
             print(request.user.email)
-        return redirect('index')
+        return redirect('dashboard')
     form = ApplicationForm()
     return render(request, 'app/form.html', {'form':form})
 
