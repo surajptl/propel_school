@@ -27,12 +27,27 @@ def application(request):
 
 @login_required
 def dashboard(request):
-    print(Applicant.objects.values('approval').filter(applicant_id=1))
     if Applicant.objects.filter(applicant_id=request.user).count()==1:
-       apply_message={'status':'You have submitted your application succesfully, please wait for further instructions'}
+       apply_message = {'status':'You have submitted your application succesfully, please wait for further instructions'}
     #    app_status = Applicant.objects.
     else :apply_message={'status':'Apply for propel school to join the best prep school'}
+    profile_messages = dashboard_user_profile_builder(request)
+    print(profile_messages)
     context={
-        'apply_message':apply_message
+        'apply_message':apply_message,
+        'profile_messages':profile_messages
     }
+    dashboard_user_profile_builder(request)
     return render(request, 'app/dashboard.html', context)
+
+
+def dashboard_user_profile_builder(request):
+    print(Applicant.objects.values('approval').get(applicant_id=request.user)['approval'])
+    profile_messages = {
+        'app_status' : Applicant.objects.values('approval').get(applicant_id=request.user)['approval'],
+        'last_login' : str(request.user.last_login),
+        'fcc_link'   : Applicant.objects.values('fcc_link').get(applicant_id=request.user)['fcc_link'],
+        'd_o_b'      : str(Applicant.objects.values('d_o_b').get(applicant_id=request.user)['d_o_b'])
+    }
+    print(request.user.last_login)
+    return profile_messages
