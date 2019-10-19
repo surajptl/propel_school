@@ -26,6 +26,8 @@ class Applicant(models.Model):
     interest       = models.CharField(default=None, max_length=250)
     fcc_eligible   = models.BooleanField(default=False)
     points         = models.CharField(default="", null=True, max_length=10)
+    join_confirm   = models.BooleanField(default=None, null = True)
+    attended_propel_before   = models.BooleanField(default=None, null = True)
     approval       = models.CharField(default='1',max_length=1, choices=APPROVAL_CHOICES, null=True)
 
 class BatchDetail(models.Model):
