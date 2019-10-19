@@ -1,4 +1,6 @@
 from suit.apps import DjangoSuitConfig
 
 class SuitConfig(DjangoSuitConfig):
-    layout = 'horizontal'
+    # layout = 'horizontal'
+    layout = 'vertical'
+    
