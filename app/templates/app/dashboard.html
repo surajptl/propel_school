@@ -1,7 +1,22 @@
 {% extends 'app/base.html' %}
 
 {% block app_content %}
-    <div class="container">
-        <h2>Welcome {{ user.full_name }}</h2>
+    <div class="card bg-light mb-3">
+        <div class="card-header">
+            <h2 class="text-center">Welcome {{user.full_name}}!</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title text-center">Application Details</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>Email: </b> {{ user.email }}</li>
+                <li class="list-group-item"><b>Phone Number: </b> {{ user.phone_number }}</li>
+                <li class="list-group-item"><b>Date of Birth: </b> {{ user.d_o_b }}</li>
+                <li class="list-group-item"><b>FreeCodeCamp Link: </b> {{ user.fcc_link }}</li>
+                <li class="list-group-item"><b>Application Status: </b> {{ user.approval }}</li>
+                {% if user.last_seen %}
+                <li class="list-group-item"><b>Last Login on:</b> {{ user.last_seen }}</li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 {% endblock %}
