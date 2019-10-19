@@ -43,12 +43,26 @@ def dashboard(request):
 
 
 def dashboard_user_profile_builder(request):
-    print(Applicant.objects.values('approval').get(applicant_id=request.user)['approval'])
+    
     profile_messages = {
-        'app_status' : Applicant.objects.values('approval').get(applicant_id=request.user)['approval'],
+        'app_status' : dashboard_profile_status_builder(int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval'])),
         'last_login' : str(request.user.last_login),
         'fcc_link'   : Applicant.objects.values('fcc_link').get(applicant_id=request.user)['fcc_link'],
-        'd_o_b'      : str(Applicant.objects.values('d_o_b').get(applicant_id=request.user)['d_o_b'])
+        'd_o_b'      : str(Applicant.objects.values('d_o_b').get(applicant_id=request.user)['d_o_b']),
+        'phone_number'   : Applicant.objects.values('phone_number').get(applicant_id=request.user)['phone_number']
     }
-    print(request.user.last_login)
     return profile_messages
+
+
+def dashboard_profile_status_builder(status_code):
+    switcher = {
+        1: "Eligible, Await further instructions",
+        2: "Please make your FreeCodeCamp profile as public",
+        3: "Please get 100+ points on FreeCodeCamp to get eligible",
+        4: "Please provide correct FreeCodeCamp profile link",
+        5: "Shortlisted, check your mail for invitation",
+        6: "Joined Propel",
+        7: "Propel challenge received",
+        8: "Given extended propel challenge"
+    }
+    return switcher.get(status_code)

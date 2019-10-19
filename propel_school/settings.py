@@ -32,7 +32,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'app.config.SuitConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -40,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    #own installed apps
+    #own
     'users.apps.UsersConfig',
     'app.apps.AppConfig',
     'crispy_forms',
@@ -139,7 +138,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
-LOGIN_REDIRECT_URL = 'dashboard'
+LOGIN_REDIRECT_URL = 'application'
 LOGIN_URL = 'login'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
