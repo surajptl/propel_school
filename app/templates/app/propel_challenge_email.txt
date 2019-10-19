@@ -1,0 +1,12 @@
+Hi,
+
+If you complete the following, you can interview at MountBlue:
+
+    1) JavaScript Algorithms and Data Structures Certification on FreeCodeCamp (https://learn.freecodecamp.org/)
+    2) HackReactor Prep (https://prep.hackreactor.com/p/hack-reactor-prep)
+    3) HackerRank - 2600 points (https://www.hackerrank.com/domains/algorithms)
+    4) Responsive Web Design Certification on FreeCodeCamp
+
+Please do this patiently and properly. If you understand concepts with clarity, it would help you a lot in the process. Don't rush through the challenges. Work with relaxedness and patience.
+
+All the best.
