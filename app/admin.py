@@ -3,10 +3,12 @@ from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
 from .models import Applicant, BatchDetail
+import requests
+import json
 
 class ApplicantAdmin(admin.ModelAdmin):
     model = Applicant
-    list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval',)
+    list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval','points')
     list_filter = ('applicant_name', 'approval',)
     search_fields = ('applicant_id__email','applicant_id__full_name')
     actions = ('fetch_fcc_points', 'private_profile', 'not_enough_points', 'wrong_link', 'shortlist_condidate', \
@@ -52,14 +54,16 @@ class ApplicantAdmin(admin.ModelAdmin):
             to = str(email.applicant_id)
             email_by_admin(subject, text_content, to, html_content)
 
-
     def fetch_fcc_points(self, request, queryset):
-        pass
+        for data in queryset:
+            data.points = fetch_score(data.fcc_link)
+            data.save()
 
 #Function to send email
 def email_by_admin(subject, text_content, to, html_content):
     from_email = settings.EMAIL_HOST_USER
     send_mail(subject, text_content, from_email, [to], html_message=html_content)
+
 
 class BatchDetailAdmin(admin.ModelAdmin):
     list_display = ('batch_type', 'date_from', 'to_date', 'strength', 'mentor_name')
@@ -69,3 +73,27 @@ class BatchDetailAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Applicant, ApplicantAdmin)
 admin.site.register(BatchDetail, BatchDetailAdmin)
+
+
+#function for fetching data from url
+def fetch_score(url):
+    profile = ""
+    score = ""
+    if url.find('freecodecamp.org') > 0:
+      n = url.rfind('/')
+      profile = url[n+1:len(url)]
+
+    api = 'https://api.freecodecamp.org/internal/api/users/get-public-profile?username=' + profile
+
+    try:
+        response = requests.get(api)
+        response = response.json()
+        if response['entities']['user'][profile]['profileUI']['isLocked']:
+            return 'Private Profile'
+        else:
+            points = response['entities']['user'][profile]['points']
+            score += str(points)
+    except:
+    	return 'Wrong Link'
+
+    return score

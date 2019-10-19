@@ -25,6 +25,7 @@ class Applicant(models.Model):
     fcc_link       = models.CharField(default=None, max_length=150)
     interest       = models.CharField(default=None, max_length=250)
     fcc_eligible   = models.BooleanField(default=False)
+    points         = models.CharField(default="", null=True, max_length=10)
     approval       = models.CharField(default='1',max_length=1, choices=APPROVAL_CHOICES, null=True)
 
 class BatchDetail(models.Model):
