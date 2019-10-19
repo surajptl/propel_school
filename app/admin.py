@@ -11,7 +11,6 @@ class ApplicantAdmin(admin.ModelAdmin):
 
     def private_profile(self, request, queryset):
         queryset.update(approval='2')
-        print(dir(queryset.values()))
 
     def not_enough_points(self, request, queryset):
         queryset.update(approval='3')
