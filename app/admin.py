@@ -2,8 +2,8 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
-from .models import Applicant, BatchDetail
-import requests
+from .models import Applicant, BatchDetail, JoinedCandidate
+# import requests
 import json
 
 class ApplicantAdmin(admin.ModelAdmin):
@@ -32,9 +32,17 @@ class ApplicantAdmin(admin.ModelAdmin):
             to = str(email.applicant_id)
             email_by_admin(subject, text_content, to, html_content)
 
-
     def join_propel(self, request, queryset):
         queryset.update(approval='6')
+        batch_detail = BatchDetail.objects.values('id','date_from').order_by('-date_from')
+        batch_id = batch_detail[0]['id']
+        join_on = batch_detail[0]['date_from']
+        for applicant in queryset:
+            candidate_detail = Applicant.objects.get(applicant_id=applicant.applicant_id)
+            # candidate_id = applicant.applicant_id
+            candidate_name = applicant.applicant_name
+            jc = JoinedCandidate(batch_id=batch_id, candidate_id=candidate_detail, candidate_name=candidate_name, joined_on=join_on)
+            jc.save()
 
     def propel_challenge(self, request, queryset):
         queryset.update(approval='7')
@@ -59,20 +67,28 @@ class ApplicantAdmin(admin.ModelAdmin):
             data.points = fetch_score(data.fcc_link)
             data.save()
 
-#Function to send email
-def email_by_admin(subject, text_content, to, html_content):
-    from_email = settings.EMAIL_HOST_USER
-    send_mail(subject, text_content, from_email, [to], html_message=html_content)
-
-
 class BatchDetailAdmin(admin.ModelAdmin):
+    model = BatchDetail
     list_display = ('batch_type', 'date_from', 'to_date', 'strength', 'mentor_name')
+    list_filter = ('date_from', 'mentor_name', 'batch_type')
     search_fields = ('batch_type', 'date_from', 'to_date', 'mentor_name')
-
+    
+class JoinedCandidateAdmin(admin.ModelAdmin):
+    model = JoinedCandidate
+    list_display = ('batch_id', 'candidate_id', 'candidate_name', 'joined_on', 'remarks')
+    list_filter = ('batch_id', 'candidate_name', 'joined_on')
+    search_fields = ('candidate_name',)
 
 # Register your models here.
 admin.site.register(Applicant, ApplicantAdmin)
 admin.site.register(BatchDetail, BatchDetailAdmin)
+admin.site.register(JoinedCandidate, JoinedCandidateAdmin)
+
+
+#Function to send email
+def email_by_admin(subject, text_content, to, html_content):
+    from_email = settings.EMAIL_HOST_USER
+    send_mail(subject, text_content, from_email, [to], html_message=html_content)
 
 
 #function for fetching data from url

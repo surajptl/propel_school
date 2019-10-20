@@ -36,3 +36,12 @@ class BatchDetail(models.Model):
     to_date        = models.DateField(default=None)
     strength       = models.PositiveIntegerField(default=0, null=False)
     mentor_name    = models.CharField(null=True, max_length=30)
+
+class JoinedCandidate(models.Model):
+    batch = models.ForeignKey(BatchDetail, on_delete=models.CASCADE)
+    candidate_id = models.OneToOneField(Applicant, on_delete=models.CASCADE)
+    candidate_name = models.CharField(null=True, max_length=64)
+    joined_on = models.DateField(default=None)
+    remarks = models.CharField(null=True, max_length=150)
+
+
