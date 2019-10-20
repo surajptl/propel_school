@@ -1,24 +1,69 @@
 {% extends 'app/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block app_content %}
 
-    <div class="card bg-light mb-3">
-        <div class="card-header">
-            <h2 class="text-center">Welcome {{user.full_name}}!</h2>
-        </div>
-        <div class="card-body">
-            <h5 class="card-title text-center">Application Details</h5>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item"><b>Email: </b> {{ user.email }}</li>
-                <li class="list-group-item"><b>Phone Number: </b> {{ profile_messages.phone_number }}</li>
-                <li class="list-group-item"><b>Date of Birth: </b> {{ profile_messages.d_o_b }}</li>
-                <li class="list-group-item"><b>FreeCodeCamp Link: </b> {{ profile_messages.fcc_link }}</li>
-                <li class="list-group-item"><b>Application Status: </b> {{ profile_messages.app_status }}</li>
-                {% if request.user.last_seen %}
-                <li class="list-group-item"><b>Last Login on:</b> {{ profile_messages.last_login }}</li>
-                {% endif %}
-            </ul>
-        </div>
+<div class="card bg-light mb-3">
+    <div class="card-header">
+        <h2 class="text-center">Welcome {{user.full_name}}!</h2>
     </div>
+    <div class="card-body">
+        <h5 class="card-title text-center">Application Details</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><b>Email: </b> {{ user.email }}</li>
+            <li class="list-group-item"><b>Phone Number: </b> {{ profile_messages.phone_number }}</li>
+            <li class="list-group-item"><b>Date of Birth: </b> {{ profile_messages.d_o_b }}</li>
+            <li class="list-group-item"><b>FreeCodeCamp Link: </b> {{ profile_messages.fcc_link }}</li>
+            <li class="list-group-item"><b>Application Status: </b> {{ profile_messages.app_status }}</li>
+            {% if request.user.last_seen %}
+            <li class="list-group-item"><b>Last Login on:</b> {{ profile_messages.last_login }}</li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+<div>
+    {% if profile_messages.app_status_code == 5 %}
+
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Joining Confirmation</legend>
+
+                <label>Confirmation for joining Propel</label>
+                <select name="join_confirmation" required>
+                    <option value="">Select</option>
+                    <option value=True>Yes, I will join on the given date at J.P Nagar</option>
+                    <option value=False>No, I'll join later.</option>
+                </select>
+
+                <label>Have you attended Propel before?</label>
+                <select name="join_confirmation" required>
+                    <option value="">Select</option>
+                    <option value=True>Yes</option>
+                    <option value=False>No</option>
+                </select>
+            </fieldset>
+            <div class="form-group">
+                <button onsubmit="return closeSelf();" class="btn btn-outline-info" type="submit">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+  function closeSelf(){
+    document.forms['certform'].submit();
+    hide(document.getElementById('divform'));
+    unHide(document.getElementById('closelink'));
+
+}
+</script>
+
+{{form.errors}}
 
 {% endblock %}
