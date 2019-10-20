@@ -2,10 +2,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
-from .models import Applicant, BatchDetail, JoinedCandidate
+from .models import Applicant, BatchDetail, JoinedCandidate, Attendance
 # import requests
 import json
 
+#Admin class for Applicant model
 class ApplicantAdmin(admin.ModelAdmin):
     model = Applicant
     list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval','points')
@@ -67,23 +68,45 @@ class ApplicantAdmin(admin.ModelAdmin):
             data.points = fetch_score(data.fcc_link)
             data.save()
 
+#Admin class for Batch Detail model
 class BatchDetailAdmin(admin.ModelAdmin):
     model = BatchDetail
     list_display = ('batch_type', 'date_from', 'to_date', 'strength', 'mentor_name')
     list_filter = ('date_from', 'mentor_name', 'batch_type')
     search_fields = ('batch_type', 'date_from', 'to_date', 'mentor_name')
     
+#Admin class for Joined Candidates model
 class JoinedCandidateAdmin(admin.ModelAdmin):
     model = JoinedCandidate
     list_display = ('batch_id', 'candidate_id', 'candidate_name', 'joined_on', 'remarks')
     list_filter = ('batch_id', 'candidate_name', 'joined_on')
     search_fields = ('candidate_name',)
+    actions = ('add_to_attendance_table',)
+
+    def add_to_attendance_table(self, request, queryset):
+        for query in queryset:
+            # batch = JoinedCandidate.objects.filter(batch_id=query.batch.id)
+            batch_id = query.batch.id
+            candidate_name = query.candidate_name
+            attendance = Attendance(batch_id=batch_id, candidate_name=candidate_name)
+            attendance.save()
+
+#Admin class for Attendance model 
+class AttendanceAdmin(admin.ModelAdmin):
+    model = Attendance
+    list_display = ('batch_id', 'candidate_name', 'date', 'present', 'notes')
+    list_filter = ('batch_id', 'candidate_name', 'date', 'notes')
+    search_fields = ('candidate_name', 'notes')
+    actions = ('present',)
+
+    def present(self, request, queryset):
+        queryset.update(present=True)
 
 # Register your models here.
 admin.site.register(Applicant, ApplicantAdmin)
 admin.site.register(BatchDetail, BatchDetailAdmin)
 admin.site.register(JoinedCandidate, JoinedCandidateAdmin)
-
+admin.site.register(Attendance, AttendanceAdmin)
 
 #Function to send email
 def email_by_admin(subject, text_content, to, html_content):

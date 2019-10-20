@@ -44,4 +44,10 @@ class JoinedCandidate(models.Model):
     joined_on = models.DateField(default=None)
     remarks = models.CharField(null=True, max_length=150)
 
-
+class Attendance(models.Model):
+    # batch = models.ForeignKey(JoinedCandidate, on_delete=models.CASCADE)
+    batch_id = models.IntegerField(null=True, default=1)
+    candidate_name = models.CharField(null=True, max_length=64)
+    date = models.DateField(default=datetime.date.today())
+    present = models.BooleanField(default=False)
+    notes = models.CharField(null=True, max_length=250)
