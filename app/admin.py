@@ -98,6 +98,7 @@ def fetch_score(url):
     try:
         response = requests.get(api)
         response = response.json()
+        profile = next(iter(response['entities']['user']))
         if response['entities']['user'][profile]['profileUI']['isLocked']:
             return 'Private Profile'
         else:
