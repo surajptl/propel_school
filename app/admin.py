@@ -1,10 +1,13 @@
+from __future__ import absolute_import, unicode_literals
 from django.conf import settings
 from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
 from .models import Applicant, BatchDetail
+from propel_school.celery import app
 import requests
 import json
+from time import sleep
 
 class ApplicantAdmin(admin.ModelAdmin):
     model = Applicant
@@ -56,8 +59,14 @@ class ApplicantAdmin(admin.ModelAdmin):
 
     def fetch_fcc_points(self, request, queryset):
         for data in queryset:
-            data.points = fetch_score(data.fcc_link)
+            # celery_id= fetch_score.delay(data.fcc_link)
+            # sleep(1)
+            # data.points = celery_id.get()
+            # print(celery_id.get())
+            data.points = fetch_score(str(data.fcc_link))
+            print('Hello')
             data.save()
+
 
 #Function to send email
 def email_by_admin(subject, text_content, to, html_content):
@@ -76,6 +85,7 @@ admin.site.register(BatchDetail, BatchDetailAdmin)
 
 
 #function for fetching data from url
+# @app.task(bind=True)
 def fetch_score(url):
     profile = ""
     score = ""
