@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
-from .forms import ApplicationForm
+from .forms import ApplicationForm, JoiningConfirmationForm
 import json
 from users.models import CustomUser
 from app.models import Applicant
@@ -25,11 +25,35 @@ def application(request):
     return render(request, 'app/form.html', {'form':form})
 
 
+# @login_required
+# def joining_confirmation(request):
+#     print('joining')
+#     if request.method == 'POST':
+#         form = JoiningConfirmationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             print('Join confirm')
+#         return redirect('dashboard')
+#     form = JoiningConfirmationForm()
+#     #return redirect('dashboard')
+#     return render(request, 'app/form.html', {'form':form})
+
+
 @login_required
 def dashboard(request):
+    if request.method == 'POST':
+        form = JoiningConfirmationForm(request.POST or None)
+        print(form)
+        print(form.errors)
+        if form.is_valid():
+            form.save()
+        return redirect('dashboard')
+    form = JoiningConfirmationForm()
+    #return redirect('dashboard')
+    #return render(request, 'app/form.html', {'form':form})
+
     if Applicant.objects.filter(applicant_id=request.user).count()==1:
        apply_message = {'status':'You have submitted your application succesfully, please wait for further instructions'}
-    #    app_status = Applicant.objects.
     else :apply_message={'status':'Apply for propel school to join the best prep school'}
     profile_messages = dashboard_user_profile_builder(request)
     context={
@@ -43,6 +67,7 @@ def dashboard(request):
 def dashboard_user_profile_builder(request):
     
     profile_messages = {
+        'app_status_code' : int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval']),
         'app_status' : dashboard_profile_status_builder(int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval'])),
         'last_login' : str(request.user.last_login),
         'fcc_link'   : Applicant.objects.values('fcc_link').get(applicant_id=request.user)['fcc_link'],
@@ -58,7 +83,7 @@ def dashboard_profile_status_builder(status_code):
         2: "Please make your FreeCodeCamp profile as public",
         3: "Please get 100+ points on FreeCodeCamp to get eligible",
         4: "Please provide correct FreeCodeCamp profile link",
-        5: "Shortlisted, check your mail for invitation",
+        5: "Shortlisted, Please confirm your joining in the form below",
         6: "Joined Propel",
         7: "Propel challenge received",
         8: "Given extended propel challenge"

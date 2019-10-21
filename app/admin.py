@@ -89,7 +89,7 @@ class BatchDetailAdmin(admin.ModelAdmin):
     list_display = ('batch_type', 'date_from', 'to_date', 'strength', 'mentor_name')
     list_filter = ('date_from', 'mentor_name', 'batch_type')
     search_fields = ('batch_type', 'date_from', 'to_date', 'mentor_name')
-    
+
 #Admin class for Joined Candidates model
 class JoinedCandidateAdmin(admin.ModelAdmin):
     model = JoinedCandidate
@@ -106,7 +106,7 @@ class JoinedCandidateAdmin(admin.ModelAdmin):
             attendance = Attendance(batch_id=batch_id, candidate_name=candidate_name)
             attendance.save()
 
-#Admin class for Attendance model 
+#Admin class for Attendance model
 class AttendanceAdmin(admin.ModelAdmin):
     model = Attendance
     list_display = ('batch_id', 'candidate_name', 'date', 'present', 'notes')
@@ -116,7 +116,7 @@ class AttendanceAdmin(admin.ModelAdmin):
 
     def present(self, request, queryset):
         queryset.update(present=True)
-    
+
     def absent(self, request, queryset):
         queryset.update(present=False)
 
