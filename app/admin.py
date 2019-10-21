@@ -79,17 +79,37 @@ class ApplicantAdmin(admin.ModelAdmin):
             if data.points == 'Wrong Link':
                 data.approval = '4'
                 data.save()
+                subject = 'Propel School | Please apply with correct FreeCodeCamp Profile'
+                text_content = render_to_string('app/wrong_link_email.txt')
+                html_content = render_to_string('app/wrong_link_email.html')
+                to = str(data.applicant_id)
+                email_by_admin.delay(subject, text_content, to, html_content)
                 print('wrong link')
             elif data.points == 'Private Profile':
                 data.approval = '2'
                 data.save()
+                subject = 'Propel School | Application Process - Make FCC Points Public'
+                text_content = render_to_string('app/private_profile_email.txt')
+                html_content = render_to_string('app/private_profile_email.html')
+                to = str(data.applicant_id)
+                email_by_admin.delay(subject, text_content, to, html_content)
                 print('private profile')
             elif int(data.points) <= 100:
                 data.approval = '3'
                 data.save()
+                subject = 'Propel School | Did not meet eligibility criteria'
+                text_content = render_to_string('app/not_eligible_email.txt')
+                html_content = render_to_string('app/not_eligible_email.html')
+                to = str(data.applicant_id)
+                email_by_admin.delay(subject, text_content, to, html_content)
             else:
                 data.approval = '1'
                 data.save()
+                subject = 'Propel School | Your application is waitlisted'
+                text_content = render_to_string('app/waitlist_email.txt')
+                html_content = render_to_string('app/waitlist_email.html')
+                to = str(data.applicant_id)
+                email_by_admin.delay(subject, text_content, to, html_content)
 
 #Function to send email
 @shared_task
