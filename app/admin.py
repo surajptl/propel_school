@@ -126,7 +126,8 @@ class AttendanceAdmin(admin.ModelAdmin):
     list_display = ('batch_id', 'candidate_name', 'date', 'present', 'notes')
     list_filter = ('batch_id', 'candidate_name', 'date', 'notes')
     search_fields = ('candidate_name', 'notes')
-    actions = ('present','absent',)
+    actions = ('present', 'absent',)
+
     def present(self, request, queryset):
         queryset.update(present=True)
 

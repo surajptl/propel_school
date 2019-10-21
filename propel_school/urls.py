@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
+from django.conf.urls import url
 from users import views as user_views
 from django.conf.urls import handler404
 
@@ -23,6 +24,9 @@ urlpatterns = [
     path('', include('app.urls')),
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
+    # url(r'^$', user_views.register, name='register'),
+    # url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+    # user_views.activate_account, name='activate'),
     path('login/', auth_views.LoginView.as_view(template_name='users/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='users/password_reset.html'), name='password_reset'),
