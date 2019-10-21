@@ -58,16 +58,21 @@ class ApplicationForm(forms.ModelForm):
 
 
 
-# class JoiningConfirmation(forms.ModelForm):
-#     JOIN_CHOICES = [
-#         (True, 'Yes, I will join on the given date at J.P Nagar'),
-#         (False, 'No, I\'ll join later.')
-#     ]
-#     ATTEND_CHOICES = [
-#         (True, 'Yes'),
-#         (False, 'No')
-#     ]
+class JoiningConfirmationForm(forms.ModelForm):
+    JOIN_CHOICES = [
+        (True, 'Yes, I will join on the given date at J.P Nagar'),
+        (False, 'No, I\'ll join later.')
+    ]
+    ATTEND_CHOICES = [
+        (True, 'Yes'),
+        (False, 'No')
+    ]
 
-#     join_confirm           = forms.CharField(label='Confirmation for joining Propel ', widget=forms.Select(choices=JOIN_CHOICES))
-#     attended_propel_before = forms.CharField(label='Confirmation for joining Propel ', widget=forms.Select(choices=ATTEND_CHOICES))
+    join_confirm           = forms.CharField(label='Confirmation for joining Propel ', widget=forms.Select(choices=JOIN_CHOICES))
+    attended_propel_before = forms.CharField(label='Attended Propel before ?', widget=forms.Select(choices=ATTEND_CHOICES))
+
+    class Meta:
+        model = Applicant
+        fields = ('join_confirm', 'attended_propel_before',)
+
     
