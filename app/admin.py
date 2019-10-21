@@ -3,13 +3,14 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
-from .models import Applicant, BatchDetail
+from .models import Applicant, BatchDetail, JoinedCandidate, Attendance
 from propel_school.celery import app
 import requests
 import json
 from celery import shared_task
 from time import sleep
 
+#Admin class for Applicant model
 class ApplicantAdmin(admin.ModelAdmin):
     model = Applicant
     list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval','points')
@@ -36,9 +37,17 @@ class ApplicantAdmin(admin.ModelAdmin):
             to = str(email.applicant_id)
             email_by_admin.delay(subject, text_content, to, html_content)
 
-
     def join_propel(self, request, queryset):
         queryset.update(approval='6')
+        batch_detail = BatchDetail.objects.values('id','date_from').order_by('-date_from')
+        batch_id = batch_detail[0]['id']
+        join_on = batch_detail[0]['date_from']
+        for applicant in queryset:
+            candidate_detail = Applicant.objects.get(applicant_id=applicant.applicant_id)
+            # candidate_id = applicant.applicant_id
+            candidate_name = applicant.applicant_name
+            jc = JoinedCandidate(batch_id=batch_id, candidate_id=candidate_detail, candidate_name=candidate_name, joined_on=join_on)
+            jc.save()
 
     def propel_challenge(self, request, queryset):
         queryset.update(approval='7')
@@ -68,7 +77,6 @@ class ApplicantAdmin(admin.ModelAdmin):
             # print('Hello')
             data.save()
 
-
 #Function to send email
 @shared_task
 def email_by_admin(subject, text_content, to, html_content):
@@ -76,15 +84,49 @@ def email_by_admin(subject, text_content, to, html_content):
     send_mail(subject, text_content, from_email, [to], html_message=html_content)
     return None
 
-
 class BatchDetailAdmin(admin.ModelAdmin):
+    model = BatchDetail
     list_display = ('batch_type', 'date_from', 'to_date', 'strength', 'mentor_name')
+    list_filter = ('date_from', 'mentor_name', 'batch_type')
     search_fields = ('batch_type', 'date_from', 'to_date', 'mentor_name')
+    
+#Admin class for Joined Candidates model
+class JoinedCandidateAdmin(admin.ModelAdmin):
+    model = JoinedCandidate
+    list_display = ('batch_id', 'candidate_id', 'candidate_name', 'joined_on', 'remarks')
+    list_filter = ('batch_id', 'candidate_name', 'joined_on')
+    search_fields = ('candidate_name',)
+    actions = ('add_to_attendance_table',)
 
+    def add_to_attendance_table(self, request, queryset):
+        for query in queryset:
+            # batch = JoinedCandidate.objects.filter(batch_id=query.batch.id)
+            batch_id = query.batch.id
+            candidate_name = query.candidate_name
+            attendance = Attendance(batch_id=batch_id, candidate_name=candidate_name)
+            attendance.save()
+
+#Admin class for Attendance model 
+class AttendanceAdmin(admin.ModelAdmin):
+    model = Attendance
+    list_display = ('batch_id', 'candidate_name', 'date', 'present', 'notes')
+    list_filter = ('batch_id', 'candidate_name', 'date', 'notes')
+    search_fields = ('candidate_name', 'notes')
+    actions = ('present',)
+
+    def present(self, request, queryset):
+        queryset.update(present=True)
 
 # Register your models here.
 admin.site.register(Applicant, ApplicantAdmin)
 admin.site.register(BatchDetail, BatchDetailAdmin)
+admin.site.register(JoinedCandidate, JoinedCandidateAdmin)
+admin.site.register(Attendance, AttendanceAdmin)
+
+#Function to send email
+def email_by_admin(subject, text_content, to, html_content):
+    from_email = settings.EMAIL_HOST_USER
+    send_mail(subject, text_content, from_email, [to], html_message=html_content)
 
 
 #function for fetching data from url
@@ -113,8 +155,3 @@ def fetch_score(url):
 
     return score
 
-
-@shared_task
-def add(a,b):
-    sleep(20)
-    return a+b
