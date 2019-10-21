@@ -16,17 +16,17 @@ class ApplicantAdmin(admin.ModelAdmin):
     list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval','points')
     list_filter = ('applicant_name', 'approval',)
     search_fields = ('applicant_id__email','applicant_id__full_name')
-    actions = ('fetch_fcc_points', 'private_profile', 'not_enough_points', 'wrong_link', 'shortlist_condidate', \
+    actions = ('fetch_fcc_points', 'shortlist_condidate', \
         'join_propel', 'propel_challenge', 'Extended_propel_challenge')
 
-    def private_profile(self, request, queryset):
-        queryset.update(approval='2')
+    # def private_profile(self, request, queryset):
+    #     queryset.update(approval='2')
 
-    def not_enough_points(self, request, queryset):
-        queryset.update(approval='3')
+    # def not_enough_points(self, request, queryset):
+    #     queryset.update(approval='3')
 
-    def wrong_link(self, request, queryset):
-        queryset.update(approval='4')
+    # def wrong_link(self, request, queryset):
+    #     queryset.update(approval='4')
 
     def shortlist_condidate(self, request, queryset):
         queryset.update(approval='5')
@@ -76,6 +76,20 @@ class ApplicantAdmin(admin.ModelAdmin):
             # data.points = fetch_score(str(data.fcc_link))
             # print('Hello')
             data.save()
+            if data.points == 'Wrong Link':
+                data.approval = '4'
+                data.save()
+                print('wrong link')
+            elif data.points == 'Private Profile':
+                data.approval = '2'
+                data.save()
+                print('private profile')
+            elif int(data.points) <= 100:
+                data.approval = '3'
+                data.save()
+            else:
+                data.approval = '1'
+                data.save()
 
 #Function to send email
 @shared_task

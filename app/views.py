@@ -24,21 +24,6 @@ def application(request):
     form = ApplicationForm()
     return render(request, 'app/form.html', {'form':form})
 
-
-# @login_required
-# def joining_confirmation(request):
-#     print('joining')
-#     if request.method == 'POST':
-#         form = JoiningConfirmationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             print('Join confirm')
-#         return redirect('dashboard')
-#     form = JoiningConfirmationForm()
-#     #return redirect('dashboard')
-#     return render(request, 'app/form.html', {'form':form})
-
-
 @login_required
 def dashboard(request):
     if request.method == 'POST':
