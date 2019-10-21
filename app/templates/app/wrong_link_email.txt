@@ -1,0 +1,9 @@
+Propel School | Please apply with correct FreeCodeCamp Profile
+
+Hi,
+
+We have gone through your application. The FreeCodeCamp URL that you sent was not correct.
+
+Please reply with the correct profile link to further your application process.
+
+Please note that you need a minimum of 100 points on freecodecamp to be eligible for the training. If you don't have a freecodecamp profile, create a profile, solve the basic exercises and share your public profile url link once you reach 100 points.
