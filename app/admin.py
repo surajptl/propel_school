@@ -1,10 +1,14 @@
+from __future__ import absolute_import, unicode_literals
 from django.conf import settings
 from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
 from .models import Applicant, BatchDetail, JoinedCandidate, Attendance
-# import requests
+from propel_school.celery import app
+import requests
 import json
+from celery import shared_task
+from time import sleep
 
 #Admin class for Applicant model
 class ApplicantAdmin(admin.ModelAdmin):
@@ -31,7 +35,7 @@ class ApplicantAdmin(admin.ModelAdmin):
         html_content = render_to_string('app/shortlist_email.html')
         for email in queryset:
             to = str(email.applicant_id)
-            email_by_admin(subject, text_content, to, html_content)
+            email_by_admin.delay(subject, text_content, to, html_content)
 
     def join_propel(self, request, queryset):
         queryset.update(approval='6')
@@ -52,7 +56,7 @@ class ApplicantAdmin(admin.ModelAdmin):
         html_content = render_to_string('app/propel_challenge_email.html')
         for email in queryset:
             to = str(email.applicant_id)
-            email_by_admin(subject, text_content, to, html_content)
+            email_by_admin.delay(subject, text_content, to, html_content)
 
     def Extended_propel_challenge(self, request, queryset):
         queryset.update(approval='8')
@@ -61,14 +65,25 @@ class ApplicantAdmin(admin.ModelAdmin):
         html_content = render_to_string('app/extended_propel_challenge_email.html')
         for email in queryset:
             to = str(email.applicant_id)
-            email_by_admin(subject, text_content, to, html_content)
+            email_by_admin.delay(subject, text_content, to, html_content)
 
     def fetch_fcc_points(self, request, queryset):
         for data in queryset:
-            data.points = fetch_score(data.fcc_link)
+            celery_id= fetch_score.delay(data.fcc_link)
+            sleep(1)
+            data.points = celery_id.get()
+            # print(celery_id.get())
+            # data.points = fetch_score(str(data.fcc_link))
+            # print('Hello')
             data.save()
 
-#Admin class for Batch Detail model
+#Function to send email
+@shared_task
+def email_by_admin(subject, text_content, to, html_content):
+    from_email = settings.EMAIL_HOST_USER
+    send_mail(subject, text_content, from_email, [to], html_message=html_content)
+    return None
+
 class BatchDetailAdmin(admin.ModelAdmin):
     model = BatchDetail
     list_display = ('batch_type', 'date_from', 'to_date', 'strength', 'mentor_name')
@@ -115,6 +130,8 @@ def email_by_admin(subject, text_content, to, html_content):
 
 
 #function for fetching data from url
+# @app.task(bind=True)
+@shared_task
 def fetch_score(url):
     profile = ""
     score = ""
@@ -127,6 +144,7 @@ def fetch_score(url):
     try:
         response = requests.get(api)
         response = response.json()
+        profile = next(iter(response['entities']['user']))
         if response['entities']['user'][profile]['profileUI']['isLocked']:
             return 'Private Profile'
         else:
@@ -136,3 +154,4 @@ def fetch_score(url):
     	return 'Wrong Link'
 
     return score
+

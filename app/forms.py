@@ -55,3 +55,19 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Applicant
         fields = ('applicant_name', 'phone_number', 'd_o_b', 'propel_mode', 'job_state','fcc_eligible',  'fcc_link', 'interest',)
+
+
+
+# class JoiningConfirmation(forms.ModelForm):
+#     JOIN_CHOICES = [
+#         (True, 'Yes, I will join on the given date at J.P Nagar'),
+#         (False, 'No, I\'ll join later.')
+#     ]
+#     ATTEND_CHOICES = [
+#         (True, 'Yes'),
+#         (False, 'No')
+#     ]
+
+#     join_confirm           = forms.CharField(label='Confirmation for joining Propel ', widget=forms.Select(choices=JOIN_CHOICES))
+#     attended_propel_before = forms.CharField(label='Confirmation for joining Propel ', widget=forms.Select(choices=ATTEND_CHOICES))
+    
