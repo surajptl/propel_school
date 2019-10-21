@@ -65,7 +65,7 @@ def dashboard(request):
 
 
 def dashboard_user_profile_builder(request):
-    
+
     profile_messages = {
         'app_status_code' : int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval']),
         'app_status' : dashboard_profile_status_builder(int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval'])),
@@ -89,3 +89,10 @@ def dashboard_profile_status_builder(status_code):
         8: "Given extended propel challenge"
     }
     return switcher.get(status_code)
+
+
+def error_404_view(request, exception):
+    return render(request,'app/404.html')
+
+def my_custom_error_view(request):
+    return render(request, 'app/500.html')

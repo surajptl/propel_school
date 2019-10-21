@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import path, include
 from users import views as user_views
-
+from django.conf.urls import handler404
 
 urlpatterns = [
     path('', include('app.urls')),
@@ -30,3 +30,8 @@ urlpatterns = [
     path('password-reset-confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='users/password_reset_confirm.html'), name='password_reset_confirm'),
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'), name='password_reset_complete'),
 ]
+
+# handler400 = 'app.views.my_custom_bad_request_view'
+# handler403 = 'app.views.my_custom_permission_denied_view'
+handler404 = 'app.views.error_404_view'
+handler500 = 'app.views.my_custom_error_view'

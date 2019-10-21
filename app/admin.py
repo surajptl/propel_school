@@ -125,12 +125,6 @@ admin.site.register(BatchDetail, BatchDetailAdmin)
 admin.site.register(JoinedCandidate, JoinedCandidateAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
 
-#Function to send email
-def email_by_admin(subject, text_content, to, html_content):
-    from_email = settings.EMAIL_HOST_USER
-    send_mail(subject, text_content, from_email, [to], html_message=html_content)
-
-
 #function for fetching data from url
 # @app.task(bind=True)
 @shared_task
