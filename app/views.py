@@ -83,7 +83,7 @@ def dashboard_profile_status_builder(status_code):
         2: "Please make your FreeCodeCamp profile as public",
         3: "Please get 100+ points on FreeCodeCamp to get eligible",
         4: "Please provide correct FreeCodeCamp profile link",
-        5: "Shortlisted, check your mail for invitation",
+        5: "Shortlisted, Please confirm your joining in the form below",
         6: "Joined Propel",
         7: "Propel challenge received",
         8: "Given extended propel challenge"

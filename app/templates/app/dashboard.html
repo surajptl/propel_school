@@ -3,6 +3,7 @@
 
 {% block app_content %}
 
+
 <div class="card bg-light mb-3">
     <div class="card-header">
         <h2 class="text-center">Welcome {{user.full_name}}!</h2>
@@ -21,10 +22,8 @@
         </ul>
     </div>
 </div>
-
+{% if profile_messages.app_status_code == 5 %}
 <div>
-    {% if profile_messages.app_status_code == 5 %}
-
     <div class="card bg-light mb-3">
         <div class="card-body">
             <form method="POST">
@@ -54,18 +53,16 @@
             </form>
         </div>
     </div>
-    {% endif %}
 </div>
+{% endif %}
 
 <script type="text/javascript">
-  function closeSelf(){
-    document.forms['certform'].submit();
-    hide(document.getElementById('divform'));
-    unHide(document.getElementById('closelink'));
-
-}
+    function closeSelf() {
+        document.forms['certform'].submit();
+        hide(document.getElementById('divform'));
+        unHide(document.getElementById('closelink'));
+    }
 </script>
 
-{{form.errors}}
 
 {% endblock %}
