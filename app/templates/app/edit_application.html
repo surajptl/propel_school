@@ -1,0 +1,27 @@
+{% extends 'app/base.html' %}
+{% load crispy_forms_tags %}
+{% block app_content %}
+<div class="card bg-light mt-2">
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4 text-center">Edit Your Application</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#id_date").datetimepicker({
+            format: 'd/m/Y',
+        });
+    });
+</script>
+{% endblock %}

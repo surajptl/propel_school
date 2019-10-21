@@ -3,13 +3,26 @@
 
 {% block app_content %}
 
+<div>
+    <h2>Admissions Portal Dashboard</h2>
+    <p>Start applications and follow through process for each program from here.</p>
+</div>
 
+
+{% if profile_messages.application is False %}
+<div>
+    <h2>NEXT STEPS</h2>
+    <p>For the first step in the admissions process, please answer a few questions about yourself to complete your application for our Onsite or Remote training programs.</p>
+    <p>Go to application page and complete your application.</p>
+</div>
+{% endif %}
+
+{% if profile_messages.application %}
 <div class="card bg-light mb-3">
     <div class="card-header">
-        <h2 class="text-center">Welcome {{user.full_name}}!</h2>
+        <h4 class="text-center">Your Application Details</h4>
     </div>
     <div class="card-body">
-        <h5 class="card-title text-center">Application Details</h5>
         <ul class="list-group list-group-flush">
             <li class="list-group-item"><b>Email: </b> {{ user.email }}</li>
             <li class="list-group-item"><b>Phone Number: </b> {{ profile_messages.phone_number }}</li>
@@ -32,14 +45,14 @@
                     <legend class="border-bottom mb-4">Joining Confirmation</legend>
 
                     <label>Confirmation for joining Propel</label>
-                    <select name="join_confirmation" required>
+                    <select name="join_confirm" required>
                         <option value="">Select</option>
                         <option value=True>Yes, I will join on the given date at J.P Nagar</option>
                         <option value=False>No, I'll join later.</option>
                     </select>
                     <br>
                     <label>Have you attended Propel before?</label>
-                    <select name="join_confirmation" required>
+                    <select name="attended_propel_before" required>
                         <option value="">Select</option>
                         <option value=True>Yes</option>
                         <option value=False>No</option>
@@ -54,6 +67,7 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endif %}
 
 <script type="text/javascript">
