@@ -1,0 +1,11 @@
+Propel School | Your application is waitlisted
+
+Hi,
+
+Thanks for applying to Propel School. You are on the waitlist for the next batch.
+
+We are going to start in the end of January. We will confirm you as soon as we finalize the dates for the next batch.
+
+Please complete the JavaScript Algorithms and Data Structures certification  and Responsive Web Design certification by then. This will help you in the training bootcamp.
+
+For the complete Propel curriculum, check out https://github.com/propelschool/javascript-learning-path
