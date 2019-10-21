@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
-from .forms import ApplicationForm, JoiningConfirmationForm
+from .forms import ApplicationForm, JoiningConfirmationForm, EditApplicationForm
 import json
 from users.models import CustomUser
 from app.models import Applicant
+from django.forms.models import model_to_dict
+
 
 # Create your views here.
 def index(request):
@@ -14,7 +16,7 @@ def index(request):
 
 @login_required
 def application(request):
-    
+    print(Applicant.objects.get(applicant_id=request.user))
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():
@@ -25,6 +27,23 @@ def application(request):
     form = ApplicationForm()
     return render(request, 'app/form.html', {'form':form})
 
+
+@login_required
+def edit_application(request):
+    
+    if request.method == 'POST':
+        form = EditApplicationForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.applicant_id = CustomUser.objects.get(id=request.user.id)
+            instance.save()
+        return redirect('dashboard')
+    else:
+       applicant = Applicant.objects.get(applicant_id=request.user)
+       form = EditApplicationForm(initial=model_to_dict(applicant))
+    return render(request, 'app/edit_application.html', {'form':form})
+
+    
 
 @login_required
 def dashboard(request):
