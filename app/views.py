@@ -31,10 +31,14 @@ def dashboard(request):
     
     if request.method == 'POST':
         form = JoiningConfirmationForm(request.POST or None)
-        print(form)
-        print(form.errors)
+        #print(form['join_confirm'])
+        #print((request.POST['join_confirm']))
+        #print(Applicant.objects.get(applicant_id=request.user))
         if form.is_valid():
-            form.save()
+            instance = Applicant.objects.get(applicant_id=request.user)
+            instance.join_confirm = request.POST['join_confirm']
+            instance.attended_propel_before = request.POST['attended_propel_before']
+            instance.save()
         return redirect('dashboard')
     form = JoiningConfirmationForm()
 
@@ -80,7 +84,7 @@ def dashboard_user_profile_builder(request):
 
 def dashboard_profile_status_builder(status_code):
     switcher = {
-        1: "Eligible, Await further instructions",
+        1: "Eligible, await further instructions",
         2: "Please make your FreeCodeCamp profile as public",
         3: "Please get 100+ points on FreeCodeCamp to get eligible",
         4: "Please provide correct FreeCodeCamp profile link",
