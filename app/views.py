@@ -14,6 +14,7 @@ def index(request):
 
 @login_required
 def application(request):
+    
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():
@@ -25,22 +26,9 @@ def application(request):
     return render(request, 'app/form.html', {'form':form})
 
 
-# @login_required
-# def joining_confirmation(request):
-#     print('joining')
-#     if request.method == 'POST':
-#         form = JoiningConfirmationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             print('Join confirm')
-#         return redirect('dashboard')
-#     form = JoiningConfirmationForm()
-#     #return redirect('dashboard')
-#     return render(request, 'app/form.html', {'form':form})
-
-
 @login_required
 def dashboard(request):
+    
     if request.method == 'POST':
         form = JoiningConfirmationForm(request.POST or None)
         print(form)
@@ -49,24 +37,37 @@ def dashboard(request):
             form.save()
         return redirect('dashboard')
     form = JoiningConfirmationForm()
-    #return redirect('dashboard')
-    #return render(request, 'app/form.html', {'form':form})
 
     if Applicant.objects.filter(applicant_id=request.user).count()==1:
-       apply_message = {'status':'You have submitted your application succesfully, please wait for further instructions'}
-    else :apply_message={'status':'Apply for propel school to join the best prep school'}
-    profile_messages = dashboard_user_profile_builder(request)
-    context={
+        apply_message = {'status':'You have submitted your application succesfully, please wait for further instructions'}
+    else :
+        apply_message={'status':'Apply for propel school to join the best prep school'}
+
+    # Bug corrected: new login users unable to access dashboard
+    if Applicant.objects.values('applicant_id').filter(applicant_id=request.user).exists():
+        profile_messages = dashboard_user_profile_builder(request)
+        context={
         'apply_message':apply_message,
         'profile_messages':profile_messages
-    }
-    dashboard_user_profile_builder(request)
-    return render(request, 'app/dashboard.html', context)
+        }
+        return render(request, 'app/dashboard.html', context)
 
+    else: 
+        profile_messages = {
+            'application' : False
+        }
+        context={
+        'apply_message':apply_message,
+        'profile_messages':profile_messages
+        }
+        return render(request, 'app/dashboard.html', context)
+
+    
 
 def dashboard_user_profile_builder(request):
     
     profile_messages = {
+        'application' : Applicant.objects.values('applicant_id').filter(applicant_id=request.user).count(),
         'app_status_code' : int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval']),
         'app_status' : dashboard_profile_status_builder(int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval'])),
         'last_login' : str(request.user.last_login),
