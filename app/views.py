@@ -20,7 +20,6 @@ def application(request):
             instance = form.save(commit=False)
             instance.applicant_id = CustomUser.objects.get(id=request.user.id)
             instance.save()
-            print(request.user.email)
         return redirect('dashboard')
     form = ApplicationForm()
     return render(request, 'app/form.html', {'form':form})
@@ -33,7 +32,6 @@ def dashboard(request):
     #    app_status = Applicant.objects.
     else :apply_message={'status':'Apply for propel school to join the best prep school'}
     profile_messages = dashboard_user_profile_builder(request)
-    print(profile_messages)
     context={
         'apply_message':apply_message,
         'profile_messages':profile_messages
