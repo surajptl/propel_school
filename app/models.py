@@ -51,5 +51,5 @@ class Attendance(models.Model):
     batch_id = models.IntegerField(null=True, default=1)
     candidate_name = models.CharField(null=True, max_length=64)
     date = models.DateField(default=datetime.date.today())
-    present = models.BooleanField(default=False)
+    present = models.BooleanField(default=True)
     notes = models.CharField(null=True, max_length=250)
