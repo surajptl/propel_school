@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
-from .models import Applicant, BatchDetail, JoinedCandidate, Attendance
+from .models import Applicant, BatchDetail, JoinedCandidate, Attendance, TaskList, TaskPerformance
 from propel_school.celery import app
 import requests
 import json
@@ -39,7 +39,8 @@ class ApplicantAdmin(admin.ModelAdmin):
 
     def join_propel(self, request, queryset):
         queryset.update(approval='6')
-        batch_detail = BatchDetail.objects.values('id','date_from').order_by('-date_from')
+        batch_detail = BatchDetail.objects.values('id','date_from').order_by('-id')
+        # batch_detail = BatchDetail.objects.values('id','date_from').order_by('-date_from')
         batch_id = batch_detail[0]['id']
         join_on = batch_detail[0]['date_from']
         for applicant in queryset:
@@ -131,10 +132,10 @@ class BatchDetailAdmin(admin.ModelAdmin):
 #Admin class for Joined Candidates model
 class JoinedCandidateAdmin(admin.ModelAdmin):
     model = JoinedCandidate
-    list_display = ('batch_id', 'candidate_id', 'candidate_name', 'joined_on', 'remarks')
+    list_display = ('candidate_name', 'candidate_id', 'batch_id', 'joined_on', 'remarks')
     list_filter = ('batch_id', 'candidate_name', 'joined_on')
     search_fields = ('candidate_name',)
-    actions = ('add_to_attendance_table',)
+    actions = ('add_to_attendance_table', 'add_task')
 
     def add_to_attendance_table(self, request, queryset):
         for query in queryset:
@@ -143,12 +144,23 @@ class JoinedCandidateAdmin(admin.ModelAdmin):
             candidate_name = query.candidate_name
             attendance = Attendance(batch_id=batch_id, candidate_name=candidate_name)
             attendance.save()
+    
+    def add_task(self, request, queryset):
+        task = TaskList.objects.values('id', 'description').order_by('-id')
+        task_id = task[0]['id']
+        task_description = task[0]['description']
+        for query in queryset:
+            joinedcandidate_detail = JoinedCandidate.objects.get(id=query.id)
+            # print(joinedcandidate_detail['id'])
+            candidate_name = query.candidate_name
+            taskperformance = TaskPerformance(task_id=task_id, joinedcandidate=joinedcandidate_detail, task_description=task_description, candidate_name=candidate_name)
+            taskperformance.save()
 
 #Admin class for Attendance model
 class AttendanceAdmin(admin.ModelAdmin):
     model = Attendance
-    list_display = ('batch_id', 'candidate_name', 'date', 'present', 'notes')
-    list_filter = ('batch_id', 'candidate_name', 'date', 'notes')
+    list_display = ('candidate_name', 'batch_id', 'date', 'present', 'notes')
+    list_filter = ('batch_id', 'candidate_name', 'date')
     search_fields = ('candidate_name', 'notes')
     actions = ('present', 'absent',)
 
@@ -158,11 +170,25 @@ class AttendanceAdmin(admin.ModelAdmin):
     def absent(self, request, queryset):
         queryset.update(present=False)
 
+class TaskListAdmin(admin.ModelAdmin):
+    model = TaskList
+    list_display = ('description', 'id')
+    list_filter = ('id', 'description')
+    search_fields = ('description',)
+
+class TaskPerformanceAdmin(admin.ModelAdmin):
+    model = TaskPerformance
+    list_display = ('task_description', 'task_id', 'joinedcandidate', 'candidate_name', 'notes')
+    list_filter = ('task_id', 'candidate_name', 'task_description')
+    search_fields = ('candidate_name','task_description')
+
 # Register your models here.
 admin.site.register(Applicant, ApplicantAdmin)
 admin.site.register(BatchDetail, BatchDetailAdmin)
 admin.site.register(JoinedCandidate, JoinedCandidateAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
+admin.site.register(TaskList, TaskListAdmin)
+admin.site.register(TaskPerformance, TaskPerformanceAdmin)
 
 #function for fetching data from url
 # @app.task(bind=True)
