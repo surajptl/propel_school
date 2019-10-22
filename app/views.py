@@ -16,7 +16,6 @@ def index(request):
 
 @login_required
 def application(request):
-    print(Applicant.objects.get(applicant_id=request.user))
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():
@@ -30,7 +29,7 @@ def application(request):
 
 @login_required
 def edit_application(request):
-    
+    print(Applicant.objects.values('join_confirm').filter(applicant_id=request.user))
     if request.method == 'POST':
         form = EditApplicationForm(request.POST)
         if form.is_valid():
@@ -95,7 +94,8 @@ def dashboard_user_profile_builder(request):
         'last_login' : str(request.user.last_login),
         'fcc_link'   : Applicant.objects.values('fcc_link').get(applicant_id=request.user)['fcc_link'],
         'd_o_b'      : str(Applicant.objects.values('d_o_b').get(applicant_id=request.user)['d_o_b']),
-        'phone_number'   : Applicant.objects.values('phone_number').get(applicant_id=request.user)['phone_number']
+        'phone_number'   : Applicant.objects.values('phone_number').get(applicant_id=request.user)['phone_number'],
+        'join_form' : Applicant.objects.values('join_confirm').get(applicant_id=request.user)['join_confirm']
     }
     return profile_messages
 

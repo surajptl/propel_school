@@ -94,41 +94,48 @@
                 </ul>
             </div>
         </div>
-        {% if profile_messages.app_status_code == 5 %}
-        <div>
-            <div class="card bg-light mb-3">
-                <div class="card-body">
-                    <form method="POST">
-                        {% csrf_token %}
-                        <fieldset class="form-group">
-                            <legend class="border-bottom mb-4">Joining Confirmation</legend>
+        {% endif %}
 
-                            <label>Confirmation for joining Propel</label>
-                            <select name="join_confirm" required>
-                                <option value="">Select</option>
-                                <option value=True>Yes, I will join on the given date at J.P Nagar</option>
-                                <option value=False>No, I'll join later.</option>
-                            </select>
-                            <br>
-                            <label>Have you attended Propel before?</label>
-                            <select name="attended_propel_before" required>
-                                <option value="">Select</option>
-                                <option value=True>Yes</option>
-                                <option value=False>No</option>
-                            </select>
-                        </fieldset>
-                        <div class="form-group">
-                            <button onsubmit="return closeSelf();" class="btn btn-outline-info" type="submit">
-                                Submit
-                            </button>
-                        </div>
-                    </form>
+        {% if profile_messages.app_status_code == 5 %}
+            {% if profile_messages.join_form is None %}
+            <div>
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                <legend class="border-bottom mb-4">Joining Confirmation</legend>
+
+                                <label>Confirmation for joining Propel</label>
+                                <select name="join_confirm" required>
+                                    <option value="">Select</option>
+                                    <option value=True>Yes, I will join on the given date at J.P Nagar</option>
+                                    <option value=False>No, I'll join later.</option>
+                                </select>
+                                <br>
+                                <label>Have you attended Propel before?</label>
+                                <select name="attended_propel_before" required>
+                                    <option value="">Select</option>
+                                    <option value=True>Yes</option>
+                                    <option value=False>No</option>
+                                </select>
+                            </fieldset>
+                            <div class="form-group">
+                                <button onsubmit="return closeSelf();" class="btn btn-outline-info" type="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+            {% endif %}
         {% endif %}
+        
+        {% if profile_messages.join_form is not None %}
+        <p>Thank you for confirming your presence, you will get the joining details by mail.</p>
+        <p>Please be on time and bring your laptop.</p>
         {% endif %}
-
 
     </div>
     </div>
