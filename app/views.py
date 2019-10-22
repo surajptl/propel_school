@@ -16,7 +16,6 @@ def index(request):
 
 @login_required
 def application(request):
-    print(Applicant.objects.get(applicant_id=request.user))
     if request.method == 'POST':
         form = ApplicationForm(request.POST)
         if form.is_valid():
@@ -30,7 +29,7 @@ def application(request):
 
 @login_required
 def edit_application(request):
-    
+
     if request.method == 'POST':
         form = EditApplicationForm(request.POST)
         if form.is_valid():
@@ -45,7 +44,7 @@ def edit_application(request):
 
 @login_required
 def dashboard(request):
-    
+
     if request.method == 'POST':
         form = JoiningConfirmationForm(request.POST or None)
         #print(form['join_confirm'])
@@ -73,7 +72,7 @@ def dashboard(request):
         }
         return render(request, 'app/dashboard.html', context)
 
-    else: 
+    else:
         profile_messages = {
             'application' : False
         }
@@ -83,7 +82,7 @@ def dashboard(request):
         }
         return render(request, 'app/dashboard.html', context)
 
-    
+
 
 def dashboard_user_profile_builder(request):
 
