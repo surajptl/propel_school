@@ -1,9 +1,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-
-
-
 <!doctype html>
 <html>
 
@@ -76,23 +73,48 @@
                     Update
                 </button>
             </div>
-        </form>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+
+        <div class="card bg-light mt-2">
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4 text-center">Edit Your Application</legend>
+                        {{ form|crispy }}
+                    </fieldset>
+                    <div class="form-group">
+                        <button class="btn btn-outline-info" type="submit">
+                            Update
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
-
-</div>
-
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-    $(function () {
-        $("#id_date").datetimepicker({
-            format: 'd/m/Y',
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $("#id_date").datetimepicker({
+                format: 'd/m/Y',
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 
