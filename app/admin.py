@@ -111,7 +111,7 @@ class JoinedCandidateAdmin(admin.ModelAdmin):
 class AttendanceAdmin(admin.ModelAdmin):
     model = Attendance
     list_display = ('batch_id', 'candidate_name', 'date', 'present', 'notes')
-    list_filter = ('batch_id', 'candidate_name', 'date', 'notes')
+    list_filter = ('batch_id', 'candidate_name', 'date')
     search_fields = ('candidate_name', 'notes')
     actions = ('present', 'absent',)
 

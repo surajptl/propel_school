@@ -17,7 +17,7 @@ class Applicant(models.Model):
     ]
 
     applicant_id   = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, default=1)
-    applicant_name = models.CharField(default=None, max_length=15)
+    applicant_name = models.CharField(default=None, max_length=64)
     phone_number   = models.IntegerField(default=None)
     d_o_b          = models.DateField(default=None)
     propel_mode    = models.CharField( default=None, max_length=15)
@@ -52,7 +52,12 @@ class Attendance(models.Model):
     present = models.BooleanField(default=True)
     notes = models.CharField(null=True, max_length=250)
 
-# class TaskList(models.Model):
-#     description = models.CharField(null=False, max_length=250)
+class TaskList(models.Model):
+    description = models.CharField(null=False, max_length=250)
 
-# class TaskPerformance()
+class TaskPerformance(models.Model):
+    task_id = models.ForeignKey(TaskList, on_delete=models.CASCADE)
+    joinedcandidates_id = models.ForeignKey(JoinedCandidate, on_delete=models.CASCADE)
+    candidate_name = models.CharField(null=False, max_length=64)
+    notes = models.CharField(null=True, max_length=250)
+
