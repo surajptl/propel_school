@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.template.loader import get_template, render_to_string
-from .models import Applicant, BatchDetail, JoinedCandidate, Attendance
+from .models import Applicant, BatchDetail, JoinedCandidate, Attendance, TaskList, TaskPerformance
 from propel_school.celery import app
 import requests
 import json
@@ -121,11 +121,25 @@ class AttendanceAdmin(admin.ModelAdmin):
     def absent(self, request, queryset):
         queryset.update(present=False)
 
+class TaskListAdmin(admin.ModelAdmin):
+    model = TaskList
+    list_display = ('id', 'description')
+    list_filter = ('id', 'description')
+    search_fields = ('description',)
+
+class TaskPerformanceAdmin(admin.ModelAdmin):
+    model = TaskPerformance
+    list_display = ('task_id', 'joinedcandidates_id', 'candidate_name', 'notes')
+    list_filter = ('task_id', 'candidate_name')
+    search_fields = ('candidate_name',)
+
 # Register your models here.
 admin.site.register(Applicant, ApplicantAdmin)
 admin.site.register(BatchDetail, BatchDetailAdmin)
 admin.site.register(JoinedCandidate, JoinedCandidateAdmin)
 admin.site.register(Attendance, AttendanceAdmin)
+admin.site.register(TaskList, TaskListAdmin)
+admin.site.register(TaskPerformance, TaskPerformanceAdmin)
 
 #function for fetching data from url
 # @app.task(bind=True)
