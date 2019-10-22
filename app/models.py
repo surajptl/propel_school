@@ -57,7 +57,7 @@ class TaskList(models.Model):
 
 class TaskPerformance(models.Model):
     task = models.ForeignKey(TaskList, on_delete=models.CASCADE)
-    joinedcandidates_id = models.ForeignKey(JoinedCandidate, on_delete=models.CASCADE)
+    joinedcandidate = models.ForeignKey(JoinedCandidate, on_delete=models.CASCADE)
     task_description = models.CharField(null=True, max_length=250)
     candidate_name = models.CharField(null=False, max_length=64)
     notes = models.CharField(null=True, max_length=250)

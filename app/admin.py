@@ -94,7 +94,7 @@ class BatchDetailAdmin(admin.ModelAdmin):
 #Admin class for Joined Candidates model
 class JoinedCandidateAdmin(admin.ModelAdmin):
     model = JoinedCandidate
-    list_display = ('batch_id', 'candidate_id', 'candidate_name', 'joined_on', 'remarks')
+    list_display = ('candidate_name', 'candidate_id', 'batch_id', 'joined_on', 'remarks')
     list_filter = ('batch_id', 'candidate_name', 'joined_on')
     search_fields = ('candidate_name',)
     actions = ('add_to_attendance_table', 'add_task')
@@ -112,15 +112,16 @@ class JoinedCandidateAdmin(admin.ModelAdmin):
         task_id = task[0]['id']
         task_description = task[0]['description']
         for query in queryset:
-            joinedcandidate_detail = JoinedCandidate.objects.filter(id=query.id)
+            joinedcandidate_detail = JoinedCandidate.objects.get(id=query.id)
+            # print(joinedcandidate_detail['id'])
             candidate_name = query.candidate_name
-            taskperformance = TaskPerformance(task=task_id, joinedcandidate_id=joinedcandidate_detail, task_description=task_description, candidate_name=candidate_name)
+            taskperformance = TaskPerformance(task_id=task_id, joinedcandidate=joinedcandidate_detail, task_description=task_description, candidate_name=candidate_name)
             taskperformance.save()
 
 #Admin class for Attendance model
 class AttendanceAdmin(admin.ModelAdmin):
     model = Attendance
-    list_display = ('batch_id', 'candidate_name', 'date', 'present', 'notes')
+    list_display = ('candidate_name', 'batch_id', 'date', 'present', 'notes')
     list_filter = ('batch_id', 'candidate_name', 'date')
     search_fields = ('candidate_name', 'notes')
     actions = ('present', 'absent',)
@@ -133,15 +134,15 @@ class AttendanceAdmin(admin.ModelAdmin):
 
 class TaskListAdmin(admin.ModelAdmin):
     model = TaskList
-    list_display = ('id', 'description')
+    list_display = ('description', 'id')
     list_filter = ('id', 'description')
     search_fields = ('description',)
 
 class TaskPerformanceAdmin(admin.ModelAdmin):
     model = TaskPerformance
-    list_display = ('task_id', 'joinedcandidates_id', 'candidate_name', 'notes')
-    list_filter = ('task_id', 'candidate_name')
-    search_fields = ('candidate_name',)
+    list_display = ('task_description', 'task_id', 'joinedcandidate', 'candidate_name', 'notes')
+    list_filter = ('task_id', 'candidate_name', 'task_description')
+    search_fields = ('candidate_name','task_description')
 
 # Register your models here.
 admin.site.register(Applicant, ApplicantAdmin)
