@@ -111,10 +111,11 @@ class JoinedCandidateAdmin(admin.ModelAdmin):
         task = TaskList.objects.values('id', 'description').order_by('-id')
         task_id = task[0]['id']
         task_description = task[0]['description']
-        print(task_id)
-        print(task_description)
         for query in queryset:
-            print(query)
+            joinedcandidate_detail = JoinedCandidate.objects.filter(id=query.id)
+            candidate_name = query.candidate_name
+            taskperformance = TaskPerformance(task=task_id, joinedcandidate_id=joinedcandidate_detail, task_description=task_description, candidate_name=candidate_name)
+            taskperformance.save()
 
 #Admin class for Attendance model
 class AttendanceAdmin(admin.ModelAdmin):
