@@ -17,57 +17,60 @@
         <link rel="stylesheet" type="text/css" href="{% static 'users/util.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'users/main.css' %}">
     </head>
-    <body>        
+    <body>
         <div class="limiter">
             <div class="container-login100" style="background-color: #656869;">
                 <div class="wrap-login100">
                     <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST">
                         {% csrf_token%}
+
                         <span class="login100-form-title" style="background-color: #292b2c;">
                             Sign In
                         </span>
-
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p class="alert alert-info">{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
                         {{ form|crispy }}
 
-                        <div class="text-right p-t-13 p-b-23">
-                            <span class="txt1">
-                                Forgot
-                            </span>
+                    <div class="text-right p-t-13 p-b-23">
+                        <a href="{% url 'password_reset' %}" class="txt2">
+                            Forgot Password?
+                        </a>
+                    </div>
 
-                            <a href="{% url 'password_reset' %}" class="txt2">
-                                Password?
-                            </a>
-                        </div>
+                    <div class="container-login100-form-btn">
+                        <button class="login100-form-btn" style="background-color: #292b2c;">
+                            Sign in
+                        </button>
+                    </div>
 
-                        <div class="container-login100-form-btn">
-                            <button class="login100-form-btn" style="background-color: #292b2c;">
-                                Sign in
-                            </button>
-                        </div>
+                    <div class="flex-col-c p-t-170 p-b-40">
+                        <span class="txt1 p-b-9">
+                            Don’t have an account?
+                        </span>
 
-                        <div class="flex-col-c p-t-170 p-b-40">
-                            <span class="txt1 p-b-9">
-                                Don’t have an account?
-                            </span>
-
-                            <a href="{% url 'register' %}" class="txt3">
-                                Register Now
-                            </a>
-                        </div>
-                    </form>
-                </div>
+                        <a href="{% url 'register' %}" class="txt3">
+                            Register Now
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
-         
-        <script src="{% static 'users/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
-        <script src="{% static 'users/vendor/animsition/js/animsition.min.js' %}"></script>
-        <script src="{% static 'users/vendor/bootstrap/js/popper.js' %}"></script>
-        <script src="{% static 'users/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'users/vendor/select2/select2.min.js' %}"></script>
-        <script src="{% static 'users/vendor/daterangepicker/moment.min.js' %}"></script>
-        <script src="{% static 'users/vendor/daterangepicker/daterangepicker.js' %}"></script>
-        <script src="{% static 'users/vendor/countdowntime/countdowntime.js' %}"></script>
-        <script src="{% static 'users/js/main.js' %}"></script>
+    </div>
 
-    </body>
+    <script src="{% static 'users/vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+    <script src="{% static 'users/vendor/animsition/js/animsition.min.js' %}"></script>
+    <script src="{% static 'users/vendor/bootstrap/js/popper.js' %}"></script>
+    <script src="{% static 'users/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'users/vendor/select2/select2.min.js' %}"></script>
+    <script src="{% static 'users/vendor/daterangepicker/moment.min.js' %}"></script>
+    <script src="{% static 'users/vendor/daterangepicker/daterangepicker.js' %}"></script>
+    <script src="{% static 'users/vendor/countdowntime/countdowntime.js' %}"></script>
+    <script src="{% static 'users/js/main.js' %}"></script>
+
+</body>
+
+
 </html>

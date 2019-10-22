@@ -16,17 +16,17 @@ class ApplicantAdmin(admin.ModelAdmin):
     list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval','points')
     list_filter = ('applicant_name', 'approval',)
     search_fields = ('applicant_id__email','applicant_id__full_name')
-    actions = ('fetch_fcc_points', 'private_profile', 'not_enough_points', 'wrong_link', 'shortlist_condidate', \
+    actions = ('fetch_fcc_points', 'shortlist_condidate', \
         'join_propel', 'propel_challenge', 'Extended_propel_challenge')
 
-    def private_profile(self, request, queryset):
-        queryset.update(approval='2')
+    # def private_profile(self, request, queryset):
+    #     queryset.update(approval='2')
 
-    def not_enough_points(self, request, queryset):
-        queryset.update(approval='3')
+    # def not_enough_points(self, request, queryset):
+    #     queryset.update(approval='3')
 
-    def wrong_link(self, request, queryset):
-        queryset.update(approval='4')
+    # def wrong_link(self, request, queryset):
+    #     queryset.update(approval='4')
 
     def shortlist_condidate(self, request, queryset):
         queryset.update(approval='5')
@@ -77,6 +77,44 @@ class ApplicantAdmin(admin.ModelAdmin):
             # data.points = fetch_score(str(data.fcc_link))
             # print('Hello')
             data.save()
+            if data.points == 'Wrong Link':
+                if data.approval is not '4':
+                    data.approval = '4'
+                    data.save()
+                    subject = 'Propel School | Please apply with correct FreeCodeCamp Profile'
+                    text_content = render_to_string('app/wrong_link_email.txt')
+                    html_content = render_to_string('app/wrong_link_email.html')
+                    to = str(data.applicant_id)
+                    email_by_admin.delay(subject, text_content, to, html_content)
+                    print('wrong link')
+            elif data.points == 'Private Profile':
+                if data.approval is not '2':
+                    data.approval = '2'
+                    data.save()
+                    subject = 'Propel School | Application Process - Make FCC Points Public'
+                    text_content = render_to_string('app/private_profile_email.txt')
+                    html_content = render_to_string('app/private_profile_email.html')
+                    to = str(data.applicant_id)
+                    email_by_admin.delay(subject, text_content, to, html_content)
+                    print('private profile')
+            elif int(data.points) <= 100:
+                if data.approval is not '3':
+                    data.approval = '3'
+                    data.save()
+                    subject = 'Propel School | Did not meet eligibility criteria'
+                    text_content = render_to_string('app/not_eligible_email.txt')
+                    html_content = render_to_string('app/not_eligible_email.html')
+                    to = str(data.applicant_id)
+                    email_by_admin.delay(subject, text_content, to, html_content)
+            else:
+                if data.approval is not '1':
+                    data.approval = '1'
+                    data.save()
+                    subject = 'Propel School | Your application is waitlisted'
+                    text_content = render_to_string('app/waitlist_email.txt')
+                    html_content = render_to_string('app/waitlist_email.html')
+                    to = str(data.applicant_id)
+                    email_by_admin.delay(subject, text_content, to, html_content)
 
 #Function to send email
 @shared_task

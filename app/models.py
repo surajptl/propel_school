@@ -14,6 +14,7 @@ class Applicant(models.Model):
     (u'6', u'Joined'),
     (u'7', u'Propel Challenge'),
     (u'8', u'Extended Propel Challenge'),
+    (u'9', u'Applied'),
     ]
 
     applicant_id   = models.OneToOneField(CustomUser, on_delete=models.CASCADE, primary_key=True, default=1)
@@ -25,10 +26,10 @@ class Applicant(models.Model):
     fcc_link       = models.CharField(default=None, max_length=150)
     interest       = models.CharField(default=None, max_length=250)
     fcc_eligible   = models.BooleanField(default=False)
-    points         = models.CharField(default="", null=True, max_length=10)
+    points         = models.CharField(default="", null=True, max_length=20)
     join_confirm   = models.BooleanField(default=None, null = True)
     attended_propel_before   = models.BooleanField(default=None, null = True)
-    approval       = models.CharField(default='1',max_length=1, choices=APPROVAL_CHOICES, null=True)
+    approval       = models.CharField(default='9',max_length=1, choices=APPROVAL_CHOICES, null=True)
 
 class BatchDetail(models.Model):
     batch_type     = models.CharField(null=True, max_length=30)

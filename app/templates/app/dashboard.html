@@ -1,68 +1,153 @@
-{% extends 'app/base.html' %}
+{% load static %}
 {% load crispy_forms_tags %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <title>Propel School</title>
+</head>
 
-{% block app_content %}
+<body style="padding: 0px 0px 80px 0px; margin: auto;">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand mr-4" href="#">Propel School</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav mr-auto">
+                    {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+                    {% if profile_messages.application is False %}
+                    <a class="nav-item nav-link" href="{% url 'application' %}">Application</a>
+                    {% else %}
+                    <a class="nav-item nav-link" href="{% url 'edit_application' %}">Edit Application</a>
+                    {% endif %}
 
-
-<div class="card bg-light mb-3">
-    <div class="card-header">
-        <h2 class="text-center">Welcome {{user.full_name}}!</h2>
-    </div>
-    <div class="card-body">
-        <h5 class="card-title text-center">Application Details</h5>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item"><b>Email: </b> {{ user.email }}</li>
-            <li class="list-group-item"><b>Phone Number: </b> {{ profile_messages.phone_number }}</li>
-            <li class="list-group-item"><b>Date of Birth: </b> {{ profile_messages.d_o_b }}</li>
-            <li class="list-group-item"><b>FreeCodeCamp Link: </b> {{ profile_messages.fcc_link }}</li>
-            <li class="list-group-item"><b>Application Status: </b> {{ profile_messages.app_status }}</li>
-            {% if request.user.last_seen %}
-            <li class="list-group-item"><b>Last Login on:</b> {{ profile_messages.last_login }}</li>
-            {% endif %}
-        </ul>
-    </div>
-</div>
-{% if profile_messages.app_status_code == 5 %}
-<div>
-    <div class="card bg-light mb-3">
-        <div class="card-body">
-            <form method="POST">
-                {% csrf_token %}
-                <fieldset class="form-group">
-                    <legend class="border-bottom mb-4">Joining Confirmation</legend>
-
-                    <label>Confirmation for joining Propel</label>
-                    <select name="join_confirmation" required>
-                        <option value="">Select</option>
-                        <option value=True>Yes, I will join on the given date at J.P Nagar</option>
-                        <option value=False>No, I'll join later.</option>
-                    </select>
-                    <br>
-                    <label>Have you attended Propel before?</label>
-                    <select name="join_confirmation" required>
-                        <option value="">Select</option>
-                        <option value=True>Yes</option>
-                        <option value=False>No</option>
-                    </select>
-                </fieldset>
-                <div class="form-group">
-                    <button onsubmit="return closeSelf();" class="btn btn-outline-info" type="submit">
-                        Submit
-                    </button>
+                    {% else %}
+                    <a class="nav-item nav-link" href="{% url 'index' %}">Home</a>
+                    {% endif %}
                 </div>
-            </form>
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="nav-item btn btn-outline-light d-inline" href="{% url 'logout' %}">Logout</a>
+                        </div>
+                    </div>
+                    <a></a>
+                    {% else %}
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <a class="nav-item btn btn-light" href="{% url 'application'%}">Apply Now</a>
+                            <a class="nav-item btn btn-outline-light ml-2" href="{% url 'login' %}">Login</a>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
+    </nav>
+
+
+    <div class="container">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div>
+            <h2>Admissions Portal Dashboard</h2>
+            <p>Start applications and follow through process for each program from here.</p>
+        </div>
+
+
+        {% if profile_messages.application is False %}
+        <div>
+            <h2>NEXT STEPS</h2>
+            <p>For the first step in the admissions process, please answer a few questions about yourself to complete
+                your application for our Onsite or Remote training programs.</p>
+            <p>Go to application page and complete your application.</p>
+        </div>
+        {% endif %}
+
+        {% if profile_messages.application %}
+        <div class="card bg-light mb-3">
+            <div class="card-header">
+                <h4 class="text-center">Your Application Details</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Email: </b> {{ user.email }}</li>
+                    <li class="list-group-item"><b>Phone Number: </b> {{ profile_messages.phone_number }}</li>
+                    <li class="list-group-item"><b>Date of Birth: </b> {{ profile_messages.d_o_b }}</li>
+                    <li class="list-group-item"><b>FreeCodeCamp Link: </b> {{ profile_messages.fcc_link }}</li>
+                    <li class="list-group-item"><b>Application Status: </b> {{ profile_messages.app_status }}</li>
+                    {% if request.user.last_seen %}
+                    <li class="list-group-item"><b>Last Login on:</b> {{ profile_messages.last_login }}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if profile_messages.app_status_code == 5 %}
+            {% if profile_messages.join_form is None %}
+            <div>
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <form method="POST">
+                            {% csrf_token %}
+                            <fieldset class="form-group">
+                                <legend class="border-bottom mb-4">Joining Confirmation</legend>
+
+                                <label>Confirmation for joining Propel</label>
+                                <select name="join_confirm" required>
+                                    <option value="">Select</option>
+                                    <option value=True>Yes, I will join on the given date at J.P Nagar</option>
+                                    <option value=False>No, I'll join later.</option>
+                                </select>
+                                <br>
+                                <label>Have you attended Propel before?</label>
+                                <select name="attended_propel_before" required>
+                                    <option value="">Select</option>
+                                    <option value=True>Yes</option>
+                                    <option value=False>No</option>
+                                </select>
+                            </fieldset>
+                            <div class="form-group">
+                                <button onsubmit="return closeSelf();" class="btn btn-outline-info" type="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+        
+        {% if profile_messages.join_form is not None %}
+        <p>Thank you for confirming your presence, you will get the joining details by mail.</p>
+        <p>Please be on time and bring your laptop.</p>
+        {% endif %}
+
     </div>
-</div>
-{% endif %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        function closeSelf() {
+            document.forms['certform'].submit();
+            hide(document.getElementById('divform'));
+            unHide(document.getElementById('closelink'));
+        }
+    </script>
+</body>
 
-<script type="text/javascript">
-    function closeSelf() {
-        document.forms['certform'].submit();
-        hide(document.getElementById('divform'));
-        unHide(document.getElementById('closelink'));
-    }
-</script>
-
-
-{% endblock %}
+</html>
