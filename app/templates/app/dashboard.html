@@ -130,10 +130,12 @@
             </div>
             {% endif %}
         {% endif %}
-        
+
         {% if profile_messages.join_form is not None %}
-        <p>Thank you for confirming your presence, you will get the joining details by mail.</p>
-        <p>Please be on time and bring your laptop.</p>
+            {% if profile_messages.app_status_code == 5 %}
+            <p>Thank you for confirming your presence, you will get the joining details by mail.</p>
+            <p>Please be on time and bring your laptop.</p>
+            {% endif %}
         {% endif %}
 
     </div>

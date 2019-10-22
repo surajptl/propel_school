@@ -21,6 +21,8 @@ from users import views as user_views
 from django.conf.urls import handler404
 
 urlpatterns = [
+    url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        user_views.activate, name='activate'),
     path('', include('app.urls')),
     path('admin/', admin.site.urls),
     path('register/', user_views.register, name='register'),
