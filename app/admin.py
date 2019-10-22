@@ -13,8 +13,8 @@ from time import sleep
 #Admin class for Applicant model
 class ApplicantAdmin(admin.ModelAdmin):
     model = Applicant
-    list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval','points')
-    list_filter = ('applicant_name', 'approval',)
+    list_display = ('applicant_name', 'applicant_id', 'phone_number', 'approval','points','join_confirm')
+    list_filter = ('applicant_name', 'approval','join_confirm')
     search_fields = ('applicant_id__email','applicant_id__full_name')
     actions = ('fetch_fcc_points', 'shortlist_condidate', \
         'join_propel', 'propel_challenge', 'Extended_propel_challenge')
