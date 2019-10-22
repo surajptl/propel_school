@@ -42,10 +42,6 @@ def edit_application(request):
        form = EditApplicationForm(initial=model_to_dict(applicant))
     return render(request, 'app/edit_application.html', {'form':form})
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 2190d6a94c34233c634ddfdc9179818850adfed5
 @login_required
 def dashboard(request):
     
