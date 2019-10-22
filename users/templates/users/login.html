@@ -2,33 +2,37 @@
 {% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <title>Login - Propel School</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- <link rel="icon" type="image/png" href="images/icons/favicon.ico"/> -->
+        <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/animate/animate.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/css-hamburgers/hamburgers.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/animsition/css/animsition.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/select2/select2.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/daterangepicker/daterangepicker.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/util.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'users/main.css' %}">
+    </head>
+    <body>
+        <div class="limiter">
+            <div class="container-login100" style="background-color: #656869;">
+                <div class="wrap-login100">
+                    <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST">
+                        {% csrf_token%}
 
-<head>
-    <title>Login - Propel School</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="icon" type="image/png" href="images/icons/favicon.ico"/> -->
-    <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" type="text/css"
-        href="{% static 'users/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/animate/animate.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/css-hamburgers/hamburgers.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/animsition/css/animsition.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/select2/select2.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'users/vendor/daterangepicker/daterangepicker.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'users/util.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'users/main.css' %}">
-</head>
-
-<body>
-    <div class="limiter">
-        <div class="container-login100" style="background-color: #656869;">
-            <div class="wrap-login100">
-                <form class="login100-form validate-form p-l-55 p-r-55 p-t-178" method="POST">
-                    {% csrf_token%}
-                    <span class="login100-form-title" style="background-color: #292b2c;">
-                        Sign In
-                    </span>
+                        <span class="login100-form-title" style="background-color: #292b2c;">
+                            Sign In
+                        </span>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p class="alert alert-info">{{ message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                        {{ form|crispy }}
 
                     {{ form|crispy }}
 
@@ -69,5 +73,6 @@
     <script src="{% static 'users/js/main.js' %}"></script>
 
 </body>
+
 
 </html>

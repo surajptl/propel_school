@@ -42,7 +42,10 @@ def edit_application(request):
        form = EditApplicationForm(initial=model_to_dict(applicant))
     return render(request, 'app/edit_application.html', {'form':form})
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2190d6a94c34233c634ddfdc9179818850adfed5
 @login_required
 def dashboard(request):
     
@@ -86,7 +89,7 @@ def dashboard(request):
     
 
 def dashboard_user_profile_builder(request):
-    
+
     profile_messages = {
         'application' : Applicant.objects.values('applicant_id').filter(applicant_id=request.user).count(),
         'app_status_code' : int(Applicant.objects.values('approval').get(applicant_id=request.user)['approval']),
@@ -102,13 +105,22 @@ def dashboard_user_profile_builder(request):
 
 def dashboard_profile_status_builder(status_code):
     switcher = {
-        1: "Eligible, await further instructions",
+
+        1: "Waitlisted, Await further instructions",
         2: "Please make your FreeCodeCamp profile as public",
         3: "Please get 100+ points on FreeCodeCamp to get eligible",
         4: "Please provide correct FreeCodeCamp profile link",
         5: "Shortlisted, Please confirm your joining in the form below",
         6: "Joined Propel",
         7: "Propel challenge received",
-        8: "Given extended propel challenge"
+        8: "Given extended propel challenge",
+        9: "Application received",
     }
     return switcher.get(status_code)
+
+
+def error_404_view(request, exception):
+    return render(request,'app/404.html')
+
+def my_custom_error_view(request):
+    return render(request, 'app/500.html')
