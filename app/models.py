@@ -51,3 +51,8 @@ class Attendance(models.Model):
     date = models.DateField(default=datetime.date.today())
     present = models.BooleanField(default=True)
     notes = models.CharField(null=True, max_length=250)
+
+# class TaskList(models.Model):
+#     description = models.CharField(null=False, max_length=250)
+
+# class TaskPerformance()

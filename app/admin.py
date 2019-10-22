@@ -39,7 +39,8 @@ class ApplicantAdmin(admin.ModelAdmin):
 
     def join_propel(self, request, queryset):
         queryset.update(approval='6')
-        batch_detail = BatchDetail.objects.values('id','date_from').order_by('-date_from')
+        batch_detail = BatchDetail.objects.values('id','date_from').order_by('-id')
+        # batch_detail = BatchDetail.objects.values('id','date_from').order_by('-date_from')
         batch_id = batch_detail[0]['id']
         join_on = batch_detail[0]['date_from']
         for applicant in queryset:
