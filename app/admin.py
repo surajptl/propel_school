@@ -97,7 +97,7 @@ class JoinedCandidateAdmin(admin.ModelAdmin):
     list_display = ('batch_id', 'candidate_id', 'candidate_name', 'joined_on', 'remarks')
     list_filter = ('batch_id', 'candidate_name', 'joined_on')
     search_fields = ('candidate_name',)
-    actions = ('add_to_attendance_table',)
+    actions = ('add_to_attendance_table', 'add_task')
 
     def add_to_attendance_table(self, request, queryset):
         for query in queryset:
@@ -106,6 +106,15 @@ class JoinedCandidateAdmin(admin.ModelAdmin):
             candidate_name = query.candidate_name
             attendance = Attendance(batch_id=batch_id, candidate_name=candidate_name)
             attendance.save()
+    
+    def add_task(self, request, queryset):
+        task = TaskList.objects.values('id', 'description').order_by('-id')
+        task_id = task[0]['id']
+        task_description = task[0]['description']
+        print(task_id)
+        print(task_description)
+        for query in queryset:
+            print(query)
 
 #Admin class for Attendance model
 class AttendanceAdmin(admin.ModelAdmin):
